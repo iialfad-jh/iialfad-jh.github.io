@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别 论文题目：Less Static, More Private: Towards Transferable Privacy-Preserving Action Recognition by Generative Decoupled Learning核心任务：隐私保护动作识别 (Privacy-Preserving Action">
+<meta property="og:type" content="article">
+<meta property="og:title" content="顶会论文阅读[1&#x2F;] | ICCV 2025">
+<meta property="og:url" content="http://example.com/2026/01/22/Less-Static-More-Private/index.html">
+<meta property="og:site_name" content="IIALFAD">
+<meta property="og:description" content="【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别 论文题目：Less Static, More Private: Towards Transferable Privacy-Preserving Action Recognition by Generative Decoupled Learning核心任务：隐私保护动作识别 (Privacy-Preserving Action">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/less-static-more-private/1.png">
+<meta property="og:image" content="http://example.com/images/less-static-more-private/overview.png">
+<meta property="og:image" content="http://example.com/images/less-static-more-private/Spatial-Consistency-Loss.png">
+<meta property="og:image" content="http://example.com/images/less-static-more-private/Results.png">
+<meta property="og:image" content="http://example.com/images/less-static-more-private/L-talign.png">
+<meta property="og:image" content="http://example.com/images/less-static-more-private/qualiative.png">
+<meta property="article:published_time" content="2026-01-22T05:07:41.000Z">
+<meta property="article:modified_time" content="2026-01-22T13:57:19.908Z">
+<meta property="article:author" content="ZJH">
+<meta property="article:tag" content="Domain Adaptation">
+<meta property="article:tag" content="PPAR">
+<meta property="article:tag" content="Private">
+<meta property="article:tag" content="论文笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/less-static-more-private/1.png">
+
+
+<link rel="canonical" href="http://example.com/2026/01/22/Less-Static-More-Private/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/01/22/Less-Static-More-Private/","path":"2026/01/22/Less-Static-More-Private/","title":"顶会论文阅读[1/] | ICCV 2025"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>顶会论文阅读[1/] | ICCV 2025 | IIALFAD</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="IIALFAD" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">IIALFAD</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个 RUNOOB 博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E3%80%90%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB%E3%80%91GenPriv%EF%BC%9A%E5%9F%BA%E4%BA%8E%E7%94%9F%E6%88%90%E5%BC%8F%E8%A7%A3%E8%80%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%8F%AF%E8%BF%81%E7%A7%BB%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E5%8A%A8%E4%BD%9C%E8%AF%86%E5%88%AB"><span class="nav-text">【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%AE%80%E4%BB%8B-Introduction"><span class="nav-text">1. 简介 (Introduction)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%9B%AE%E6%A0%87-Problem-Formulation"><span class="nav-text">2. 目标 (Problem Formulation)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84-Model-Architecture"><span class="nav-text">3. 模型架构 (Model Architecture)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E7%A9%BA%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8-ST-VAE"><span class="nav-text">时空变分自编码器 (ST-VAE)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82-Implementation-Details"><span class="nav-text">4. 实现细节 (Implementation Details)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E8%AE%AD%E7%BB%83%E7%BB%86%E8%8A%82-Training-Evaluation-Protocols"><span class="nav-text">5. 训练细节 (Training &amp; Evaluation Protocols)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E5%88%9D%E5%A7%8B%E5%8C%96%E9%98%B6%E6%AE%B5-Initialization"><span class="nav-text">5.1 初始化阶段 (Initialization)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E5%AF%B9%E6%8A%97%E5%AD%A6%E4%B9%A0%E9%98%B6%E6%AE%B5-Adversarial-Learning"><span class="nav-text">5.2 对抗学习阶段 (Adversarial Learning)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-%E8%AF%84%E4%BC%B0%E5%8D%8F%E8%AE%AE-Evaluation-Protocol"><span class="nav-text">5.3 评估协议 (Evaluation Protocol)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C-Experimental-Results"><span class="nav-text">6. 实验结果 (Experimental Results)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BE%E7%BD%AE"><span class="nav-text">6.1 数据集设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-%E5%AE%9A%E9%87%8F%E7%BB%93%E6%9E%9C"><span class="nav-text">6.2 定量结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-%E6%B6%88%E8%9E%8D%E5%AE%9E%E9%AA%8C-Ablation-Study"><span class="nav-text">6.3 消融实验 (Ablation Study)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-%E5%AE%9A%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-text">6.4 定性分析</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZJH"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">ZJH</p>
+  <div class="site-description" itemprop="description">学习笔记</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:jiahhhao@outlook.com" title="E-Mail → mailto:jiahhhao@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/01/22/Less-Static-More-Private/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="ZJH">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IIALFAD">
+      <meta itemprop="description" content="学习笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="顶会论文阅读[1&#x2F;] | ICCV 2025 | IIALFAD">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          顶会论文阅读[1/] | ICCV 2025
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-01-22 13:07:41 / 修改时间：21:57:19" itemprop="dateCreated datePublished" datetime="2026-01-22T13:07:41+08:00">2026-01-22</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别"><a href="#【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别" class="headerlink" title="【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别"></a>【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别</h1><blockquote>
+<p><strong>论文题目</strong>：Less Static, More Private: Towards Transferable Privacy-Preserving Action Recognition by Generative Decoupled Learning<br><strong>核心任务</strong>：隐私保护动作识别 (Privacy-Preserving Action Recognition, PPAR)、域适应 (Domain Adaptation)</p>
+</blockquote>
+<p>本文介绍的 <strong>GenPriv</strong> 方法，通过一种新颖的 <strong>生成式解耦学习（Generative Decoupled Learning）</strong> 框架，旨在解决跨域场景下的隐私保护与动作识别的权衡问题。</p>
+<p><img src="/images/less-static-more-private/1.png" alt="Comparison between the existing PPAR methods and ourGenPriv."></p>
+<span id="more"></span>
+
+<hr>
+<h2 id="1-简介-Introduction"><a href="#1-简介-Introduction" class="headerlink" title="1. 简介 (Introduction)"></a>1. 简介 (Introduction)</h2><p>在视频监控、智能家居及辅助医疗（如跌倒检测）等应用中，动作识别技术日益普及。然而，直接上传原始视频数据会暴露用户的生物特征（人脸、性别）及环境信息（背景），引发严重的隐私泄露问题。现有的隐私保护方法虽然在单一数据分布下表现良好，但在面临跨域场景（如光照变化、视角变化）时，往往表现出较差的泛化能力。</p>
+<p><strong>研究背景与挑战：</strong><br>传统的隐私保护动作识别方法主要面临两大挑战：</p>
+<ol>
+<li><strong>隐私泄露风险</strong>：原始视频中包含大量非动作相关的静态信息（如人脸、衣着、背景），这些是隐私泄露的主要来源。</li>
+<li><strong>域偏差（Domain Shift）</strong>：现实场景复杂多变（例如从日间监控转为夜间监控，或从固定摄像头转为无人机视角）。现有 PPAR 模型缺乏可迁移性，在目标域（Target Domain）上的性能显著下降。</li>
+</ol>
+<p><strong>核心思想：</strong><br>作者提出基于视频特征的解耦假设：</p>
+<ul>
+<li><strong>隐私敏感信息</strong>主要存在于 <strong>静态特征（Static Features）</strong> 中（如外观、背景）。</li>
+<li><strong>动作相关信息</strong>主要存在于 <strong>动态特征（Dynamic Features）</strong> 中（如运动轨迹）。</li>
+</ul>
+<p>基于此，GenPriv 的核心策略是将视频特征解耦为静态和动态两部分，通过量化机制移除静态特征中的隐私信息，同时对齐动态特征以适应不同领域的环境差异，最终生成去隐私化的匿名视频。</p>
+<hr>
+<h2 id="2-目标-Problem-Formulation"><a href="#2-目标-Problem-Formulation" class="headerlink" title="2. 目标 (Problem Formulation)"></a>2. 目标 (Problem Formulation)</h2><p>本研究的目标是优化一个视频匿名化函数 $f_A$ 和一个动作分类器 $f_T$，使其满足以下两个约束：</p>
+<ol>
+<li><strong>动作识别效用 (Utility Constraint)</strong>：<br>在目标域上，使用匿名化视频 $f_A(x)$ 进行动作识别的性能应接近使用原始视频 $x$ 的性能。<br>$$L_T(f_T(f_A(x))) \approx L_T(f_T(x))$$</li>
+</ol>
+<p>$x$为<strong>原始视频 (Raw Video)</strong></p>
+<p><strong>$f_A(x)$</strong>：<strong>匿名化视频 (Anonymized Video)</strong></p>
+<p><strong>$f_T$ (Action Classifier)</strong>：<strong>动作分类器（裁判）</strong></p>
+<p><strong>$f_B$ (Privacy Predictor)</strong>：<strong>隐私预测器（攻击者）</strong></p>
+<p><strong>$L_T$ (Target Loss)</strong>：<strong>动作识别的误差</strong></p>
+<p><strong>$L_B$ (Budget&#x2F;Privacy Loss)</strong>：<strong>隐私预测的误差</strong></p>
+<ol start="2">
+<li><strong>隐私保护约束 (Privacy Constraint)</strong>：<br>隐私属性预测器（攻击者）$f_B$ 在匿名化视频上的预测误差应显著高于原始视频，即无法准确推断隐私属性。<br>$$L_B(f_B(f_A(x))) \gg L_B(f_B(x))$$</li>
+</ol>
+<p>最终的优化目标是一个极小极大（Minimax）问题：<br>$$ \min_{f_A, f_T} \left[ L_T(\dots) + \gamma L_B(\dots) \right] $$<br>其中 $\gamma$ 为平衡系数。</p>
+<hr>
+<h2 id="3-模型架构-Model-Architecture"><a href="#3-模型架构-Model-Architecture" class="headerlink" title="3. 模型架构 (Model Architecture)"></a>3. 模型架构 (Model Architecture)</h2><p>GenPriv 的核心架构是 <strong>时空变分自编码器 (ST-VAE)</strong>，其设计包含特征解耦、离散化量化以及特征重组三个关键环节。</p>
+<p><img src="/images/less-static-more-private/overview.png" alt="Figure 2: Overview of GenPriv"></p>
+<p><em>(  GenPriv 的整体框架，包含静态&#x2F;动态路径及相关损失函数)</em></p>
+<h3 id="时空变分自编码器-ST-VAE"><a href="#时空变分自编码器-ST-VAE" class="headerlink" title="时空变分自编码器 (ST-VAE)"></a>时空变分自编码器 (ST-VAE)</h3><ol>
+<li><p><strong>特征解耦与编码 (Decoupled Encoding)</strong>：</p>
+<ul>
+<li><strong>静态路径</strong>：采用 2D CNN 提取帧级空间特征，捕获外观信息。</li>
+<li><strong>动态路径</strong>：采用 3D CNN 提取时序特征，建模动作依赖关系。</li>
+</ul>
+</li>
+<li><p><strong>离散化量化 (Quantization)</strong>：<br>引入两个独立的码本（Codebook）：</p>
+<ul>
+<li><strong>静态码本 ($\mathcal{C}_F$)</strong>：容量较小（如 2048），用于限制静态信息的表达能力，过滤掉人脸等高频隐私细节。</li>
+<li><strong>动态码本 ($\mathcal{C}_T$)</strong>：容量较大（如 16384），用于保留丰富的动作细节。<br>通过最近邻查找（Nearest Neighbor Search），将连续特征映射为离散的码本索引。</li>
+</ul>
+</li>
+<li><p><strong>正则化损失函数</strong>：</p>
+<ul>
+<li><strong>互信息损失 ($L_{mi}$)</strong>：最小化静态与动态特征之间的互信息，强制两者正交，防止动作信息泄漏至静态特征或隐私信息残留于动态特征。</li>
+<li><strong>空间一致性损失 ($L_{s-cons}$)</strong>：利用三元组损失（Triplet Loss），约束同一视频内的静态特征在时间上保持不变，确保提取的是背景和外观特征。</li>
+</ul>
+<p><img src="/images/less-static-more-private/Spatial-Consistency-Loss.png" alt="Spatial Consistency Loss"></p>
+<ul>
+<li><strong>时序对齐损失 ($L_{t-align}$)</strong>：引入域分类器 $G$ 和梯度反转层 (GRL)。编码器旨在生成无法被 $G$ 区分源域或目标域的动态特征，从而实现动态特征的域不变性。</li>
+</ul>
+</li>
+<li><p><strong>解码与生成</strong>：<br>将去隐私后的静态特征与域对齐后的动态特征拼接，通过解码器重建为匿名视频。</p>
+</li>
+</ol>
+<hr>
+<h2 id="4-实现细节-Implementation-Details"><a href="#4-实现细节-Implementation-Details" class="headerlink" title="4. 实现细节 (Implementation Details)"></a>4. 实现细节 (Implementation Details)</h2><ul>
+<li><p><strong>网络骨干 (Backbones)</strong>：</p>
+<ul>
+<li><strong>动作分类器 ($f_T$)</strong>：采用 <strong>R2plus1D-18</strong>，适用于时空特征提取。</li>
+<li><strong>隐私预测器 ($f_B$)</strong>：采用 <strong>ResNet-50</strong>，专注于从静态帧中识别隐私属性。</li>
+<li><strong>ST-VAE</strong>：自定义的混合卷积网络结构。</li>
+</ul>
+</li>
+<li><p><strong>码本更新策略</strong>：<br>针对静态码本采用 <strong>指数移动平均 (EMA)</strong> 更新。若某些码字频繁被隐私预测器利用（高隐私泄露风险）但对动作识别贡献低，则降低其被选中的概率或更新其值。</p>
+</li>
+</ul>
+<hr>
+<h2 id="5-训练细节-Training-Evaluation-Protocols"><a href="#5-训练细节-Training-Evaluation-Protocols" class="headerlink" title="5. 训练细节 (Training &amp; Evaluation Protocols)"></a>5. 训练细节 (Training &amp; Evaluation Protocols)</h2><p>训练过程采用对抗学习框架，分为初始化、对抗训练和评估三个阶段。</p>
+<h3 id="5-1-初始化阶段-Initialization"><a href="#5-1-初始化阶段-Initialization" class="headerlink" title="5.1 初始化阶段 (Initialization)"></a>5.1 初始化阶段 (Initialization)</h3><p>预热 ST-VAE，使其具备基本的视频重构和动作特征提取能力。</p>
+<ul>
+<li>损失函数：$\mathcal{L}_{init} &#x3D; \mathcal{L}_{rec} \text{ (重构损失)} + \mathcal{L}_{act} \text{ (动作分类损失)}$</li>
+</ul>
+<h3 id="5-2-对抗学习阶段-Adversarial-Learning"><a href="#5-2-对抗学习阶段-Adversarial-Learning" class="headerlink" title="5.2 对抗学习阶段 (Adversarial Learning)"></a>5.2 对抗学习阶段 (Adversarial Learning)</h3><p>采用迭代式交替训练策略：</p>
+<ol>
+<li><p><strong>更新匿名器 $f_A$ (ST-VAE)</strong>：</p>
+<ul>
+<li>目标：最小化动作分类损失，最大化隐私预测损失（即欺骗攻击者），同时满足解耦和对齐约束。</li>
+<li>损失函数： $\mathcal{L}_{adv} &#x3D; \lambda_{st}(\mathcal{L}_{mi} + \mathcal{L}_{s-cons} + \mathcal{L}_{t-align}) + \lambda_a \mathcal{L}_{act} - \lambda_p \mathcal{L}_{pri}$</li>
+<li><em>注：$-\mathcal{L}_{pri}$ 项用于对抗隐私预测器。</em></li>
+</ul>
+</li>
+<li><p><strong>更新辅助网络 $f_T, f_B, G$</strong>：</p>
+<ul>
+<li>目标：动作分类器 $f_T$ 需准确识别动作；隐私预测器 $f_B$ 需尽可能识别隐私；域分类器 $G$ 需区分数据来源。</li>
+<li>此步骤确保攻击者保持最强状态，迫使 $f_A$ 学习更鲁棒的隐私去除策略。</li>
+</ul>
+</li>
+</ol>
+<h3 id="5-3-评估协议-Evaluation-Protocol"><a href="#5-3-评估协议-Evaluation-Protocol" class="headerlink" title="5.3 评估协议 (Evaluation Protocol)"></a>5.3 评估协议 (Evaluation Protocol)</h3><ul>
+<li><strong>动作识别</strong>：直接在目标域测试集上评估 Top-1 准确率。</li>
+<li><strong>隐私保护</strong>：采用<strong>重新初始化 (Re-initialization)</strong> 协议。丢弃训练时的隐私预测器，在生成的匿名视频上<strong>从头训练</strong>一个新的、收敛的隐私预测器 $f’_B$，以评估残留隐私信息的泄露程度。</li>
+</ul>
+<hr>
+<h2 id="6-实验结果-Experimental-Results"><a href="#6-实验结果-Experimental-Results" class="headerlink" title="6. 实验结果 (Experimental Results)"></a>6. 实验结果 (Experimental Results)</h2><p>作者在三个具有显著域差异的基准数据集上进行了评估：</p>
+<h3 id="6-1-数据集设置"><a href="#6-1-数据集设置" class="headerlink" title="6.1 数据集设置"></a>6.1 数据集设置</h3><ol>
+<li><strong>TP-UCF $\leftrightarrow$ TP-HMDB</strong>：标准动作数据集，包含人脸、性别等 5 种隐私属性标注。</li>
+<li><strong>Kinetics $\leftrightarrow$ NEC-Drone</strong>：<strong>视角迁移</strong>场景（平视视角至无人机俯视视角）。</li>
+<li><strong>HMDB $\leftrightarrow$ ARID</strong>：<strong>光照迁移</strong>场景（正常光照至黑暗环境）。</li>
+</ol>
+<h3 id="6-2-定量结果"><a href="#6-2-定量结果" class="headerlink" title="6.2 定量结果"></a>6.2 定量结果</h3><p><img src="/images/less-static-more-private/Results.png" alt="Quantitative Results"></p>
+<p><em>(在 TP-HMDB $\rightarrow$ TP-UCF 任务上的性能对比)</em></p>
+<ul>
+<li><strong>动作识别性能</strong>：GenPriv 在目标域上的 Top-1 准确率显著优于基线方法（如 VITA+DANN, SPAct+DANN）。例如在 TP-HMDB $\rightarrow$ TP-UCF 任务中，GenPriv 达到 <strong>87.91%</strong>，优于第二名约 15%。</li>
+<li><strong>隐私保护性能</strong>：在动作识别性能大幅提升的同时，GenPriv 的隐私泄露指标（F1 Score 和 cMAP）保持在较低水平，证明了其在效用和隐私之间的有效权衡。</li>
+</ul>
+<h3 id="6-3-消融实验-Ablation-Study"><a href="#6-3-消融实验-Ablation-Study" class="headerlink" title="6.3 消融实验 (Ablation Study)"></a>6.3 消融实验 (Ablation Study)</h3><ul>
+<li><p><strong>解耦的必要性</strong>：实验表明，仅使用动态特征或静态特征均无法同时兼顾隐私与识别率，混合解耦策略效果最佳。</p>
+</li>
+<li><p><strong>时序对齐的有效性</strong>：移除 $\mathcal{L}_{t-align}$ 后，跨域识别性能显著下降，证明在隐空间进行特征对齐是提升迁移能力的关键。</p>
+<p><img src="/images/less-static-more-private/L-talign.png" alt="移除结果"></p>
+</li>
+<li><p><strong>生成式策略优势</strong>：相较于基于 Skip-Connection 的方法，GenPriv 的生成式重组策略有效避免了原始图像细节的意外泄露。</p>
+</li>
+</ul>
+<h3 id="6-4-定性分析"><a href="#6-4-定性分析" class="headerlink" title="6.4 定性分析"></a>6.4 定性分析</h3><p><img src="/images/less-static-more-private/qualiative.png" alt="Figure 4: Qualitative Visualization"></p>
+<p><em>(可视化结果显示，匿名化视频模糊了面部特征，但保留了动作姿态。Grad-CAM 热力图表明隐私预测器的关注点被成功转移。)</em></p>
+<p>可视化结果显示，GenPriv 生成的视频在视觉上呈现为抽象的动态纹理，有效抹除了人脸和背景细节，但保留了清晰的动作轮廓。Grad-CAM 分析进一步证实，攻击模型无法再聚焦于面部等隐私敏感区域。</p>
+<hr>
+<p><strong>总结</strong>：提出了一种名为 <strong>GenPriv</strong> 的生成式解耦学习框架，通过将视频特征解耦为 <strong>静态（含隐私）</strong> 和 <strong>动态（含动作）</strong> 两部分，在利用量化机制移除静态隐私信息的同时，通过时序对齐技术解决了现有隐私保护模型在 <strong>跨域（如光照、视角变化）</strong> 场景下失效的问题，实现了既能保护隐私又能精准识别动作的目标。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Private/" rel="tag"># Private</a>
+              <a href="/tags/PPAR/" rel="tag"># PPAR</a>
+              <a href="/tags/Domain-Adaptation/" rel="tag"># Domain Adaptation</a>
+              <a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="tag"># 论文笔记</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/01/05/%E4%B8%BB%E5%AE%9A%E7%90%86%E5%9B%9E%E9%A1%BE/" rel="prev" title="主定理回顾">
+                  <i class="fa fa-angle-left"></i> 主定理回顾
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/01/22/VPR-CLOAK/" rel="next" title="顶会论文阅读[2&#x2F;] | ICCV 2025">
+                  顶会论文阅读[2/] | ICCV 2025 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZJH</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">7k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">24 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div> -->
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

@@ -1,21 +1,310 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2025/12/27/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+    <title>顶会论文阅读[1/] | ICCV 2025</title>
+    <url>/2026/01/22/Less-Static-More-Private/</url>
+    <content><![CDATA[<h1 id="【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别"><a href="#【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别" class="headerlink" title="【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别"></a>【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别</h1><blockquote>
+<p><strong>论文题目</strong>：Less Static, More Private: Towards Transferable Privacy-Preserving Action Recognition by Generative Decoupled Learning<br><strong>核心任务</strong>：隐私保护动作识别 (Privacy-Preserving Action Recognition, PPAR)、域适应 (Domain Adaptation)</p>
+</blockquote>
+<p>本文介绍的 <strong>GenPriv</strong> 方法，通过一种新颖的 <strong>生成式解耦学习（Generative Decoupled Learning）</strong> 框架，旨在解决跨域场景下的隐私保护与动作识别的权衡问题。</p>
+<p><img src="/images/less-static-more-private/1.png" alt="Comparison between the existing PPAR methods and ourGenPriv."></p>
+<span id="more"></span>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<hr>
+<h2 id="1-简介-Introduction"><a href="#1-简介-Introduction" class="headerlink" title="1. 简介 (Introduction)"></a>1. 简介 (Introduction)</h2><p>在视频监控、智能家居及辅助医疗（如跌倒检测）等应用中，动作识别技术日益普及。然而，直接上传原始视频数据会暴露用户的生物特征（人脸、性别）及环境信息（背景），引发严重的隐私泄露问题。现有的隐私保护方法虽然在单一数据分布下表现良好，但在面临跨域场景（如光照变化、视角变化）时，往往表现出较差的泛化能力。</p>
+<p><strong>研究背景与挑战：</strong><br>传统的隐私保护动作识别方法主要面临两大挑战：</p>
+<ol>
+<li><strong>隐私泄露风险</strong>：原始视频中包含大量非动作相关的静态信息（如人脸、衣着、背景），这些是隐私泄露的主要来源。</li>
+<li><strong>域偏差（Domain Shift）</strong>：现实场景复杂多变（例如从日间监控转为夜间监控，或从固定摄像头转为无人机视角）。现有 PPAR 模型缺乏可迁移性，在目标域（Target Domain）上的性能显著下降。</li>
+</ol>
+<p><strong>核心思想：</strong><br>作者提出基于视频特征的解耦假设：</p>
+<ul>
+<li><strong>隐私敏感信息</strong>主要存在于 <strong>静态特征（Static Features）</strong> 中（如外观、背景）。</li>
+<li><strong>动作相关信息</strong>主要存在于 <strong>动态特征（Dynamic Features）</strong> 中（如运动轨迹）。</li>
+</ul>
+<p>基于此，GenPriv 的核心策略是将视频特征解耦为静态和动态两部分，通过量化机制移除静态特征中的隐私信息，同时对齐动态特征以适应不同领域的环境差异，最终生成去隐私化的匿名视频。</p>
+<hr>
+<h2 id="2-目标-Problem-Formulation"><a href="#2-目标-Problem-Formulation" class="headerlink" title="2. 目标 (Problem Formulation)"></a>2. 目标 (Problem Formulation)</h2><p>本研究的目标是优化一个视频匿名化函数 $f_A$ 和一个动作分类器 $f_T$，使其满足以下两个约束：</p>
+<ol>
+<li><strong>动作识别效用 (Utility Constraint)</strong>：<br>在目标域上，使用匿名化视频 $f_A(x)$ 进行动作识别的性能应接近使用原始视频 $x$ 的性能。<br>$$L_T(f_T(f_A(x))) \approx L_T(f_T(x))$$</li>
+</ol>
+<p>$x$为<strong>原始视频 (Raw Video)</strong></p>
+<p><strong>$f_A(x)$</strong>：<strong>匿名化视频 (Anonymized Video)</strong></p>
+<p><strong>$f_T$ (Action Classifier)</strong>：<strong>动作分类器（裁判）</strong></p>
+<p><strong>$f_B$ (Privacy Predictor)</strong>：<strong>隐私预测器（攻击者）</strong></p>
+<p><strong>$L_T$ (Target Loss)</strong>：<strong>动作识别的误差</strong></p>
+<p><strong>$L_B$ (Budget&#x2F;Privacy Loss)</strong>：<strong>隐私预测的误差</strong></p>
+<ol start="2">
+<li><strong>隐私保护约束 (Privacy Constraint)</strong>：<br>隐私属性预测器（攻击者）$f_B$ 在匿名化视频上的预测误差应显著高于原始视频，即无法准确推断隐私属性。<br>$$L_B(f_B(f_A(x))) \gg L_B(f_B(x))$$</li>
+</ol>
+<p>最终的优化目标是一个极小极大（Minimax）问题：<br>$$ \min_{f_A, f_T} \left[ L_T(\dots) + \gamma L_B(\dots) \right] $$<br>其中 $\gamma$ 为平衡系数。</p>
+<hr>
+<h2 id="3-模型架构-Model-Architecture"><a href="#3-模型架构-Model-Architecture" class="headerlink" title="3. 模型架构 (Model Architecture)"></a>3. 模型架构 (Model Architecture)</h2><p>GenPriv 的核心架构是 <strong>时空变分自编码器 (ST-VAE)</strong>，其设计包含特征解耦、离散化量化以及特征重组三个关键环节。</p>
+<p><img src="/images/less-static-more-private/overview.png" alt="Figure 2: Overview of GenPriv"></p>
+<p><em>(  GenPriv 的整体框架，包含静态&#x2F;动态路径及相关损失函数)</em></p>
+<h3 id="时空变分自编码器-ST-VAE"><a href="#时空变分自编码器-ST-VAE" class="headerlink" title="时空变分自编码器 (ST-VAE)"></a>时空变分自编码器 (ST-VAE)</h3><ol>
+<li><p><strong>特征解耦与编码 (Decoupled Encoding)</strong>：</p>
+<ul>
+<li><strong>静态路径</strong>：采用 2D CNN 提取帧级空间特征，捕获外观信息。</li>
+<li><strong>动态路径</strong>：采用 3D CNN 提取时序特征，建模动作依赖关系。</li>
+</ul>
+</li>
+<li><p><strong>离散化量化 (Quantization)</strong>：<br>引入两个独立的码本（Codebook）：</p>
+<ul>
+<li><strong>静态码本 ($\mathcal{C}_F$)</strong>：容量较小（如 2048），用于限制静态信息的表达能力，过滤掉人脸等高频隐私细节。</li>
+<li><strong>动态码本 ($\mathcal{C}_T$)</strong>：容量较大（如 16384），用于保留丰富的动作细节。<br>通过最近邻查找（Nearest Neighbor Search），将连续特征映射为离散的码本索引。</li>
+</ul>
+</li>
+<li><p><strong>正则化损失函数</strong>：</p>
+<ul>
+<li><strong>互信息损失 ($L_{mi}$)</strong>：最小化静态与动态特征之间的互信息，强制两者正交，防止动作信息泄漏至静态特征或隐私信息残留于动态特征。</li>
+<li><strong>空间一致性损失 ($L_{s-cons}$)</strong>：利用三元组损失（Triplet Loss），约束同一视频内的静态特征在时间上保持不变，确保提取的是背景和外观特征。</li>
+</ul>
+<p><img src="/images/less-static-more-private/Spatial-Consistency-Loss.png" alt="Spatial Consistency Loss"></p>
+<ul>
+<li><strong>时序对齐损失 ($L_{t-align}$)</strong>：引入域分类器 $G$ 和梯度反转层 (GRL)。编码器旨在生成无法被 $G$ 区分源域或目标域的动态特征，从而实现动态特征的域不变性。</li>
+</ul>
+</li>
+<li><p><strong>解码与生成</strong>：<br>将去隐私后的静态特征与域对齐后的动态特征拼接，通过解码器重建为匿名视频。</p>
+</li>
+</ol>
+<hr>
+<h2 id="4-实现细节-Implementation-Details"><a href="#4-实现细节-Implementation-Details" class="headerlink" title="4. 实现细节 (Implementation Details)"></a>4. 实现细节 (Implementation Details)</h2><ul>
+<li><p><strong>网络骨干 (Backbones)</strong>：</p>
+<ul>
+<li><strong>动作分类器 ($f_T$)</strong>：采用 <strong>R2plus1D-18</strong>，适用于时空特征提取。</li>
+<li><strong>隐私预测器 ($f_B$)</strong>：采用 <strong>ResNet-50</strong>，专注于从静态帧中识别隐私属性。</li>
+<li><strong>ST-VAE</strong>：自定义的混合卷积网络结构。</li>
+</ul>
+</li>
+<li><p><strong>码本更新策略</strong>：<br>针对静态码本采用 <strong>指数移动平均 (EMA)</strong> 更新。若某些码字频繁被隐私预测器利用（高隐私泄露风险）但对动作识别贡献低，则降低其被选中的概率或更新其值。</p>
+</li>
+</ul>
+<hr>
+<h2 id="5-训练细节-Training-Evaluation-Protocols"><a href="#5-训练细节-Training-Evaluation-Protocols" class="headerlink" title="5. 训练细节 (Training &amp; Evaluation Protocols)"></a>5. 训练细节 (Training &amp; Evaluation Protocols)</h2><p>训练过程采用对抗学习框架，分为初始化、对抗训练和评估三个阶段。</p>
+<h3 id="5-1-初始化阶段-Initialization"><a href="#5-1-初始化阶段-Initialization" class="headerlink" title="5.1 初始化阶段 (Initialization)"></a>5.1 初始化阶段 (Initialization)</h3><p>预热 ST-VAE，使其具备基本的视频重构和动作特征提取能力。</p>
+<ul>
+<li>损失函数：$\mathcal{L}_{init} &#x3D; \mathcal{L}_{rec} \text{ (重构损失)} + \mathcal{L}_{act} \text{ (动作分类损失)}$</li>
+</ul>
+<h3 id="5-2-对抗学习阶段-Adversarial-Learning"><a href="#5-2-对抗学习阶段-Adversarial-Learning" class="headerlink" title="5.2 对抗学习阶段 (Adversarial Learning)"></a>5.2 对抗学习阶段 (Adversarial Learning)</h3><p>采用迭代式交替训练策略：</p>
+<ol>
+<li><p><strong>更新匿名器 $f_A$ (ST-VAE)</strong>：</p>
+<ul>
+<li>目标：最小化动作分类损失，最大化隐私预测损失（即欺骗攻击者），同时满足解耦和对齐约束。</li>
+<li>损失函数： $\mathcal{L}_{adv} &#x3D; \lambda_{st}(\mathcal{L}_{mi} + \mathcal{L}_{s-cons} + \mathcal{L}_{t-align}) + \lambda_a \mathcal{L}_{act} - \lambda_p \mathcal{L}_{pri}$</li>
+<li><em>注：$-\mathcal{L}_{pri}$ 项用于对抗隐私预测器。</em></li>
+</ul>
+</li>
+<li><p><strong>更新辅助网络 $f_T, f_B, G$</strong>：</p>
+<ul>
+<li>目标：动作分类器 $f_T$ 需准确识别动作；隐私预测器 $f_B$ 需尽可能识别隐私；域分类器 $G$ 需区分数据来源。</li>
+<li>此步骤确保攻击者保持最强状态，迫使 $f_A$ 学习更鲁棒的隐私去除策略。</li>
+</ul>
+</li>
+</ol>
+<h3 id="5-3-评估协议-Evaluation-Protocol"><a href="#5-3-评估协议-Evaluation-Protocol" class="headerlink" title="5.3 评估协议 (Evaluation Protocol)"></a>5.3 评估协议 (Evaluation Protocol)</h3><ul>
+<li><strong>动作识别</strong>：直接在目标域测试集上评估 Top-1 准确率。</li>
+<li><strong>隐私保护</strong>：采用<strong>重新初始化 (Re-initialization)</strong> 协议。丢弃训练时的隐私预测器，在生成的匿名视频上<strong>从头训练</strong>一个新的、收敛的隐私预测器 $f’_B$，以评估残留隐私信息的泄露程度。</li>
+</ul>
+<hr>
+<h2 id="6-实验结果-Experimental-Results"><a href="#6-实验结果-Experimental-Results" class="headerlink" title="6. 实验结果 (Experimental Results)"></a>6. 实验结果 (Experimental Results)</h2><p>作者在三个具有显著域差异的基准数据集上进行了评估：</p>
+<h3 id="6-1-数据集设置"><a href="#6-1-数据集设置" class="headerlink" title="6.1 数据集设置"></a>6.1 数据集设置</h3><ol>
+<li><strong>TP-UCF $\leftrightarrow$ TP-HMDB</strong>：标准动作数据集，包含人脸、性别等 5 种隐私属性标注。</li>
+<li><strong>Kinetics $\leftrightarrow$ NEC-Drone</strong>：<strong>视角迁移</strong>场景（平视视角至无人机俯视视角）。</li>
+<li><strong>HMDB $\leftrightarrow$ ARID</strong>：<strong>光照迁移</strong>场景（正常光照至黑暗环境）。</li>
+</ol>
+<h3 id="6-2-定量结果"><a href="#6-2-定量结果" class="headerlink" title="6.2 定量结果"></a>6.2 定量结果</h3><p><img src="/images/less-static-more-private/Results.png" alt="Quantitative Results"></p>
+<p><em>(在 TP-HMDB $\rightarrow$ TP-UCF 任务上的性能对比)</em></p>
+<ul>
+<li><strong>动作识别性能</strong>：GenPriv 在目标域上的 Top-1 准确率显著优于基线方法（如 VITA+DANN, SPAct+DANN）。例如在 TP-HMDB $\rightarrow$ TP-UCF 任务中，GenPriv 达到 <strong>87.91%</strong>，优于第二名约 15%。</li>
+<li><strong>隐私保护性能</strong>：在动作识别性能大幅提升的同时，GenPriv 的隐私泄露指标（F1 Score 和 cMAP）保持在较低水平，证明了其在效用和隐私之间的有效权衡。</li>
+</ul>
+<h3 id="6-3-消融实验-Ablation-Study"><a href="#6-3-消融实验-Ablation-Study" class="headerlink" title="6.3 消融实验 (Ablation Study)"></a>6.3 消融实验 (Ablation Study)</h3><ul>
+<li><p><strong>解耦的必要性</strong>：实验表明，仅使用动态特征或静态特征均无法同时兼顾隐私与识别率，混合解耦策略效果最佳。</p>
+</li>
+<li><p><strong>时序对齐的有效性</strong>：移除 $\mathcal{L}_{t-align}$ 后，跨域识别性能显著下降，证明在隐空间进行特征对齐是提升迁移能力的关键。</p>
+<p><img src="/images/less-static-more-private/L-talign.png" alt="移除结果"></p>
+</li>
+<li><p><strong>生成式策略优势</strong>：相较于基于 Skip-Connection 的方法，GenPriv 的生成式重组策略有效避免了原始图像细节的意外泄露。</p>
+</li>
+</ul>
+<h3 id="6-4-定性分析"><a href="#6-4-定性分析" class="headerlink" title="6.4 定性分析"></a>6.4 定性分析</h3><p><img src="/images/less-static-more-private/qualiative.png" alt="Figure 4: Qualitative Visualization"></p>
+<p><em>(可视化结果显示，匿名化视频模糊了面部特征，但保留了动作姿态。Grad-CAM 热力图表明隐私预测器的关注点被成功转移。)</em></p>
+<p>可视化结果显示，GenPriv 生成的视频在视觉上呈现为抽象的动态纹理，有效抹除了人脸和背景细节，但保留了清晰的动作轮廓。Grad-CAM 分析进一步证实，攻击模型无法再聚焦于面部等隐私敏感区域。</p>
+<hr>
+<p><strong>总结</strong>：提出了一种名为 <strong>GenPriv</strong> 的生成式解耦学习框架，通过将视频特征解耦为 <strong>静态（含隐私）</strong> 和 <strong>动态（含动作）</strong> 两部分，在利用量化机制移除静态隐私信息的同时，通过时序对齐技术解决了现有隐私保护模型在 <strong>跨域（如光照、视角变化）</strong> 场景下失效的问题，实现了既能保护隐私又能精准识别动作的目标。</p>
 ]]></content>
+      <tags>
+        <tag>Private</tag>
+        <tag>PPAR</tag>
+        <tag>Domain Adaptation</tag>
+        <tag>论文笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>主定理回顾</title>
+    <url>/2026/01/05/%E4%B8%BB%E5%AE%9A%E7%90%86%E5%9B%9E%E9%A1%BE/</url>
+    <content><![CDATA[<p><strong>主定理（Master Theorem）</strong> 是算法分析中用于解决<strong>分治法（Divide and Conquer）</strong> 递归关系式的一个“万能公式”。它能让你直接通过公式推导出时间复杂度，而不需要画递归树或进行复杂的数学归纳。</p>
+<p>以下是它计算复杂度的详细步骤和逻辑：</p>
+<span id="more"></span>
+
+<hr>
+<h3 id="1-适用形式"><a href="#1-适用形式" class="headerlink" title="1. 适用形式"></a>1. 适用形式</h3><p>主定理专门解决如下形式的递推公式：</p>
+<p>$$T(n) &#x3D; aT\left(\frac{n}{b}\right) + f(n)$$</p>
+<p>其中：</p>
+<ul>
+<li><strong>$n$</strong>：问题的规模。</li>
+<li><strong>$a$</strong>：子问题的数量（$a \ge 1$）。</li>
+<li><strong>$b$</strong>：每个子问题缩小的倍数（$b &gt; 1$）。</li>
+<li><strong>$f(n)$</strong>：当前层（递归之外）所做的工作，通常是<strong>分解问题</strong>和<strong>合并结果</strong>的时间。</li>
+</ul>
+<hr>
+<h3 id="2-核心逻辑：一场“拔河比赛”"><a href="#2-核心逻辑：一场“拔河比赛”" class="headerlink" title="2. 核心逻辑：一场“拔河比赛”"></a>2. 核心逻辑：一场“拔河比赛”</h3><p>主定理的本质是在比较两股力量的大小：</p>
+<ol>
+<li><strong>$n^{\log_b a}$</strong>：代表<strong>递归树底部的叶子节点数量</strong>（或者说是最后一层的工作量）。</li>
+<li><strong>$f(n)$</strong>：代表<strong>递归树根节点（顶层）的工作量</strong>。</li>
+</ol>
+<p><strong>谁大，复杂度就由谁决定。</strong></p>
+<hr>
+<h3 id="3-三种情况（计算规则）"><a href="#3-三种情况（计算规则）" class="headerlink" title="3. 三种情况（计算规则）"></a>3. 三种情况（计算规则）</h3><p>我们需要比较 $f(n)$ 和 $n^{\log_b a}$ 的大小关系。</p>
+<h4 id="情况-1：叶子节点占主导（头轻脚重）"><a href="#情况-1：叶子节点占主导（头轻脚重）" class="headerlink" title="情况 1：叶子节点占主导（头轻脚重）"></a>情况 1：叶子节点占主导（头轻脚重）</h4><p>如果 $f(n)$ <strong>小于</strong> $n^{\log_b a}$ （并且是多项式级的小，即小了 $n^\epsilon$ 倍），那么递归到底部的工作量最大。</p>
+<ul>
+<li><strong>条件</strong>：$f(n) &#x3D; O(n^{\log_b a - \epsilon})$，其中 $\epsilon &gt; 0$。</li>
+<li><strong>结果</strong>：<br>$$T(n) &#x3D; \Theta(n^{\log_b a})$$</li>
+</ul>
+<blockquote>
+<p><strong>例子：</strong> $T(n) &#x3D; 9T(n&#x2F;3) + n$</p>
+<ul>
+<li>$a&#x3D;9, b&#x3D;3, f(n)&#x3D;n$</li>
+<li>计算关键值：$n^{\log_b a} &#x3D; n^{\log_3 9} &#x3D; n^2$</li>
+<li>比较：$f(n)&#x3D;n$ 远小于 $n^2$。</li>
+<li>结论：$T(n) &#x3D; \Theta(n^2)$</li>
+</ul>
+</blockquote>
+<h4 id="情况-2：势均力敌（平衡）"><a href="#情况-2：势均力敌（平衡）" class="headerlink" title="情况 2：势均力敌（平衡）"></a>情况 2：势均力敌（平衡）</h4><p>如果 $f(n)$ 和 $n^{\log_b a}$ <strong>同阶</strong>（大小相当），那么每一层的工作量都差不多。总复杂度 &#x3D; 每层工作量 $\times$ 层数（$\log n$）。</p>
+<ul>
+<li><strong>条件</strong>：$f(n) &#x3D; \Theta(n^{\log_b a})$。<ul>
+<li><em>注：有时候会遇到带 $\log$ 的情况，如 $f(n) &#x3D; \Theta(n^{\log_b a} \log^k n)$，结果就是 $\Theta(n^{\log_b a} \log^{k+1} n)$。</em></li>
+</ul>
+</li>
+<li><strong>结果</strong>：<br>$$T(n) &#x3D; \Theta(n^{\log_b a} \cdot \log n)$$</li>
+</ul>
+<blockquote>
+<p><strong>例子（归并排序）：</strong> $T(n) &#x3D; 2T(n&#x2F;2) + n$</p>
+<ul>
+<li>$a&#x3D;2, b&#x3D;2, f(n)&#x3D;n$</li>
+<li>计算关键值：$n^{\log_b a} &#x3D; n^{\log_2 2} &#x3D; n^1 &#x3D; n$</li>
+<li>比较：$f(n)$ 和关键值相等。</li>
+<li>结论：$T(n) &#x3D; \Theta(n \log n)$</li>
+</ul>
+</blockquote>
+<h4 id="情况-3：根节点占主导（头重脚轻）"><a href="#情况-3：根节点占主导（头重脚轻）" class="headerlink" title="情况 3：根节点占主导（头重脚轻）"></a>情况 3：根节点占主导（头重脚轻）</h4><p>如果 $f(n)$ <strong>大于</strong> $n^{\log_b a}$ （多项式级的大），且满足正则条件（Regularity Condition），那么顶层的工作量最大，递归下去的工作量忽略不计。</p>
+<ul>
+<li><strong>条件</strong>：$f(n) &#x3D; \Omega(n^{\log_b a + \epsilon})$，且 $af(n&#x2F;b) \le c f(n)$ （$c &lt; 1$）。</li>
+<li><strong>结果</strong>：<br>$$T(n) &#x3D; \Theta(f(n))$$</li>
+</ul>
+<blockquote>
+<p><strong>例子：</strong> $T(n) &#x3D; 3T(n&#x2F;4) + n \log n$</p>
+<ul>
+<li>$a&#x3D;3, b&#x3D;4, f(n) &#x3D; n \log n$</li>
+<li>计算关键值：$n^{\log_4 3} \approx n^{0.793}$</li>
+<li>比较：$f(n)$ 是 $n^{1+}$ 级别，显然比 $n^{0.793}$ 大。</li>
+<li>结论：$T(n) &#x3D; \Theta(n \log n)$ （即复杂度由 $f(n)$ 决定）。</li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="4-快速记忆口诀"><a href="#4-快速记忆口诀" class="headerlink" title="4. 快速记忆口诀"></a>4. 快速记忆口诀</h3><p>算出 <strong>$K &#x3D; \log_b a$</strong>，比较 <strong>$n^K$</strong> 和 <strong>$f(n)$</strong>：</p>
+<ol>
+<li><strong>$n^K$ 更大</strong> $\rightarrow$ 复杂度是 $O(n^K)$</li>
+<li><strong>一样大</strong> $\rightarrow$ 复杂度是 $O(n^K \log n)$</li>
+<li><strong>$f(n)$ 更大</strong> $\rightarrow$ 复杂度是 $O(f(n))$</li>
+</ol>
+<p><em>(注意：这里的“大”和“小”必须是多项式级别的差异，不能只是相差一个 $\log n$，除非属于情况2的扩展)</em></p>
+<hr>
+<h3 id="5-不能使用主定理的情况"><a href="#5-不能使用主定理的情况" class="headerlink" title="5. 不能使用主定理的情况"></a>5. 不能使用主定理的情况</h3><p>主定理虽然好用，但不是所有递归式都能解。以下情况失效：</p>
+<ol>
+<li><strong>$T(n)$ 不是单调的</strong>（例如 $f(n) &#x3D; \sin n$）。</li>
+<li><strong>$f(n)$ 不是多项式级的差别</strong>。<ul>
+<li>例如：$T(n) &#x3D; 2T(n&#x2F;2) + n&#x2F;\log n$。</li>
+<li>这里 $n^{\log_2 2} &#x3D; n$，而 $f(n) &#x3D; n&#x2F;\log n$。虽然 $f(n)$ 比 $n$ 小，但它不是“多项式级的小”（$n^\epsilon$），只是小了一个对数因子。这就落入了情况1和情况2的<strong>缝隙</strong>中，不能用主定理。</li>
+</ul>
+</li>
+<li><strong>$a$ 或 $b$ 不是常数</strong>。</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>Algorithm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>顶会论文阅读[2/] | ICCV 2025</title>
+    <url>/2026/01/22/VPR-CLOAK/</url>
+    <content><![CDATA[<hr>
+<h1 id="VPR-Cloak-针对视觉地点识别隐私保护的首次探索"><a href="#VPR-Cloak-针对视觉地点识别隐私保护的首次探索" class="headerlink" title="VPR-Cloak: 针对视觉地点识别隐私保护的首次探索"></a>VPR-Cloak: 针对视觉地点识别隐私保护的首次探索</h1><blockquote>
+<p><strong>论文题目</strong>：VPR-Cloak: A First Look at Privacy Cloak Against Visual Place Recognition<br><strong>核心任务</strong>：针对视觉地点识别（VPR）系统的图像隐私保护，防止未经授权的位置信息泄露。</p>
+</blockquote>
+<p>本文介绍的 <strong>VPR-Cloak</strong> 方法，通过一种<strong>显著性感知先验引导的扰动优化（Saliency-Aware Prior Guided Perturbation Optimization, SAP-PO）</strong> 框架，旨在解决视觉地点识别场景下，现有隐私保护方法在黑盒攻击鲁棒性、视觉不可察觉性以及实时处理性能方面难以兼顾的问题。</p>
+<img src="/images/vpr-cloak/introduction.png" alt="introduction" style="width: 50%; display: block; margin: 0 auto;" />
+
+<span id="more"></span>
+
+<h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h2><p>随着视觉地点识别（Visual Place Recognition, VPR）技术的飞速发展，其在增强定位和导航能力的同时，也带来了严峻的隐私挑战。在社交媒体广泛普及的今天，未经授权的第三方可以利用强大的 VPR 系统，通过用户发布的照片与后台数据库进行比对，从而精确推断出用户的行踪轨迹。这种能力的泛化不仅暴露了地理位置隐私，更可能进一步泄露用户的身份和居住信息。</p>
+<p>尽管对抗性扰动（Adversarial Perturbations）在图像分类等领域的隐私保护中已有研究，但现有的解决方案难以同时满足 VPR 场景下的特定需求：既要对抗黑盒模型，又要保证人眼不可察觉，同时还需要满足实时处理的效率要求。针对这一空白，本文提出了 <strong>VPR-Cloak</strong>，这是一种高效的隐私保护框架，旨在为图像添加“隐形”保护层，使其能够欺骗 VPR 系统，防止位置信息泄露。</p>
+<h2 id="2-目标"><a href="#2-目标" class="headerlink" title="2. 目标"></a>2. 目标</h2><p>VPR-Cloak 的设计主要为了解决现实世界中针对 VPR 隐私保护的三个核心挑战：</p>
+<ol>
+<li><strong>黑盒鲁棒性（Black-box Robustness）</strong>：现实中的恶意 VPR 模型通常是未知的（黑盒）。保护机制必须在不知道目标模型架构和参数的情况下，有效降低其识别成功率。</li>
+<li><strong>不可察觉性（Imperceptibility）</strong>：生成的扰动必须保持极高的视觉质量。图像在经过处理后，对于人类观察者而言应当看似未被修改，不影响正常的社交分享。</li>
+<li><strong>实时性能（Real-time Performance）</strong>：为了支持实际应用（如移动端实时上传保护），算法的推理和处理速度必须足够快，优于现有的资源密集型方法。</li>
+</ol>
+<h2 id="3-模型架构"><a href="#3-模型架构" class="headerlink" title="3. 模型架构"></a>3. 模型架构</h2><p>VPR-Cloak 的核心架构由两个主要部分组成：<strong>显著性感知先验生成（Saliency-Aware Prior Generation）</strong> 和 <strong>显著性感知先验引导扰动优化（SAP-PO）</strong>。</p>
+<p><img src="/images/vpr-cloak/overview.png" alt="Figure 2: Overview of VPR-Cloak"></p>
+<p><em>VPR-Cloak 整体架构概览。利用微调的 ViT 提取显著性先验，并通过 SAP-PO 算法在空间域或频域生成对抗扰动。</em></p>
+<h3 id="3-1-显著性感知先验生成"><a href="#3-1-显著性感知先验生成" class="headerlink" title="3.1 显著性感知先验生成"></a>3.1 显著性感知先验生成</h3><p>为了避免在天空、地面等非关键区域引入无效噪声从而降低视觉质量，模型首先构建了一个显著性感知机制。该机制利用经过微调的 Vision Transformer（Fine-tuned ViT，基于 DINOv2 主干并采用适配器微调），对输入图像进行分析。ViT 输出一个显著性感知先验图 $P$，该图精准地标识了 VPR 系统在进行地点识别时所依赖的决定性区域（如建筑纹理、地标特征）。</p>
+<h3 id="3-2-SAP-PO-算法框架"><a href="#3-2-SAP-PO-算法框架" class="headerlink" title="3.2 SAP-PO 算法框架"></a>3.2 SAP-PO 算法框架</h3><p>SAP-PO（Saliency-Aware Prior Guided Perturbation Optimization）是整个框架的核心优化算法。它利用代理 VPR 模型（Surrogate VPR）提供的梯度反馈，迭代地生成最优扰动。为了平衡攻击效果与视觉隐蔽性，SAP-PO 提供了两种优化策略：</p>
+<ul>
+<li><strong>空间域优化</strong>：直接利用显著性先验图 $P$ 作为空间权重，将扰动集中在对识别至关重要的区域，同时抑制非相关区域的噪声。</li>
+<li><strong>频域优化</strong>：利用人类视觉系统对低频信息敏感而深度学习模型依赖高频纹理的特性，通过离散余弦变换（DCT）将扰动转换至频域。算法将扰动分解为 $8 \times 8$ 的图块，分离并去除左上角的低频分量（RemoveLowFreq），仅对右下角的高频分量进行精细化修改，最后通过逆离散余弦变换（IDCT）还原。这种方法在保证攻击有效性的同时，极大提升了人眼的不可察觉性。</li>
+</ul>
+<h2 id="4-实现细节"><a href="#4-实现细节" class="headerlink" title="4. 实现细节"></a>4. 实现细节</h2><p>SAP-PO 的具体执行是一个迭代优化的过程，旨在生成最终的对抗扰动 $\delta$。</p>
+<p>在每一次迭代中，算法首先计算当前的受扰动图像 $I’$。如果是频域模式，算法会先对噪声 $\delta$ 应用高通滤波操作，强制去除低频成分，确保噪声主要存在于高频部分。随后，图像被输入到代理 VPR 模型中，计算损失函数。该损失函数旨在最大化图像特征与真实地点特征之间的距离（Adversarial Loss），同时约束图像质量（Visual Loss）。</p>
+<p>通过反向传播获取梯度后，算法更新噪声 $\delta$。为了防止噪声过大导致视觉伪影，更新后的噪声必须经过一个基于显著性先验的裁剪函数（Clipping Function）：</p>
+<p>$$ \delta &#x3D; \mathcal{C}(\delta, -P \cdot \epsilon, P \cdot \epsilon) $$</p>
+<p>其中 $\epsilon$ 代表最大扰动预算。该公式利用显著性图 $P$ 动态调整每个像素点的扰动上限：在显著区域（$P \approx 1$），允许较大的扰动以增强攻击力；在非显著区域（$P \approx 0$），强制扰动趋近于零。值得注意的是，在频域模式下，由于去除了低频分量，噪声已具备隐身特性，因此此时会将 $P$ 放宽为 1，允许全图范围的高频扰动优化。</p>
+<h2 id="5-训练细节"><a href="#5-训练细节" class="headerlink" title="5. 训练细节"></a>5. 训练细节</h2><p>为了确保生成的对抗样本具有良好的迁移性（Transferability），即能够攻击未知的黑盒模型，VPR-Cloak 在优化过程中采用了<strong>随机选择策略</strong>。</p>
+<p>系统维护一个包含多种不同架构 VPR 模型的模型池（Model Pool, e.g., NetVLAD, GeM 等）。在 SAP-PO 的 $K$ 次迭代循环中（通常 $K&#x3D;10$），算法并非固定使用某一个代理模型，而是随机从模型池中选择不同的模型作为当前的 Surrogate VPR 来计算梯度。这种“轮流陪练”的机制防止了扰动对单一模型结构的过拟合，显著增强了生成的对抗样本在面对未知黑盒模型（如 Google 或 Bing 的专有模型）时的通用攻击能力。</p>
+<h2 id="6-实验结果"><a href="#6-实验结果" class="headerlink" title="6. 实验结果"></a>6. 实验结果</h2><p>作者在多个具有挑战性的基准数据集上进行了广泛的评估，包括 PITTS30K（标准城市场景）、TOKYO247（光照变化）、MSLS（跨时间&#x2F;长周期）以及 NORDLAND（剧烈季节变化）。</p>
+<h3 id="6-1-黑盒攻击性能对比"><a href="#6-1-黑盒攻击性能对比" class="headerlink" title="6.1 黑盒攻击性能对比"></a>6.1 黑盒攻击性能对比</h3><p>实验对比了 VPR-Cloak 与当前的 SOTA 方法（如 ANDA 和 MultiANDA）。在黑盒设置下（即使用 Crica 模型作为代理生成的扰动去攻击 DHE 等其他模型），实验结果（Table 1）显示，VPR-Cloak 在 $\Delta R@1$（召回率下降幅度）等指标上全面超越基线方法。这表明该方法具有极强的迁移性，能够有效防御未知的 VPR 系统。</p>
+<p><img src="/images/vpr-cloak/result1.png" alt="total experiments"></p>
+<p><em>实验指标，保护成功率 (%) 比较 (Epsilon&#x3D;12&#x2F;255)。 ΔR@1、ΔR@5和ΔR@10衡量的是应用保护后模型检索精度的下降情况，值越大表明保护越强</em></p>
+<h3 id="6-2-图像质量评估"><a href="#6-2-图像质量评估" class="headerlink" title="6.2 图像质量评估"></a>6.2 图像质量评估</h3><p>在视觉质量方面，得益于频域优化策略，VPR-Cloak 生成的图像在 LPIPS（感知误差，越低越好）和 PSNR（峰值信噪比，越高越好）指标上均优于对比方法。定性结果表明，保护后的图像在人眼看来与原图几乎无异，没有明显的噪点或伪影。</p>
+<p><img src="/images/vpr-cloak/result3.png" alt="Image quality comparison"></p>
+<p><em>图像质量比较（Epsilon&#x3D;12&#x2F;255）。较高的 PSNR&#x2F;SSIM 和较低的 LPIPS 表示更好的视觉保真度，而较低的 Avg Epsilon 表示更难以察觉的扰动。</em></p>
+<p><img src="/images/vpr-cloak/result2.png" alt="Qualitative results"></p>
+<p><em>定性结果。我们的方法可以有效防止位置检索，同时保持图像质量。绿色框表示保护成功，橙色框表示保护成功。</em></p>
+<h3 id="6-3-运行效率与实战验证"><a href="#6-3-运行效率与实战验证" class="headerlink" title="6.3 运行效率与实战验证"></a>6.3 运行效率与实战验证</h3><p>效率评估显示，VPR-Cloak 处理单张图像仅需 0.036 秒，相比 MultiANDA 的 0.551 秒实现了约 15 倍的加速，满足了实时应用的需求。此外，作者还通过 Google Image Search 和 Microsoft Bing Image Search 进行了实战验证（Figure 4）。结果表明，经过 VPR-Cloak 处理的图像成功误导了这些顶级的商业视觉搜索系统，使其返回错误的地点或不相关的物体，充分证明了该方法的实际应用价值。</p>
+<p><img src="/images/vpr-cloak/result2.png" alt="Figure 4: Real-world protection"></p>
+<p><em>商业 API 防护测试。经 VPR-Cloak 保护的图像成功导致 Google 和 Bing 无法检索到正确的地理位置信息。</em></p>
+<hr>
+<p><strong>总结</strong></p>
+<p>本文首创了针对视觉地点识别（VPR）的隐私保护框架 VPR-Cloak，通过结合显著性区域定位与频域高频噪声优化（SAP-PO），成功实现了兼具黑盒攻击鲁棒性、视觉隐蔽性与实时处理能力的图像位置隐私保护。</p>
+<p>显著性区域定位是让攻击 <strong>“指哪打哪”</strong>（只改AI关注的建筑纹理，不改天空背景），<strong>频域高频噪声优化</strong> 是让攻击 <strong>“瞒天过海”</strong>（把干扰藏在人眼看不见的高频细节里，不动低频轮廓），两者结合就是**精准且隐形的致命打。</p>
+]]></content>
+      <tags>
+        <tag>Private</tag>
+        <tag>论文笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>伊斯坦布尔</title>
+    <url>/2026/01/03/%E4%BC%8A%E6%96%AF%E5%9D%A6%E5%B8%83%E5%B0%94/</url>
+    <content><![CDATA[<p>土耳其有很多著名的城市与景点，其第一大都市伊斯坦布尔是欧洲最大的城市，横跨欧亚大陆，曾被拿破仑誉为“世界的首都”，这里有象征着拜占庭帝国的圣索菲亚大教堂，有代表了东正教最正统文化的圣乔治主座堂，也有承载了奥斯曼帝国记忆的托普卡帕宫。甚至连凯宾斯基运营的酒店Çiragan Palace Kempinski Instanbul，都曾经是奥斯曼帝国苏丹的皇宫。</p>
+<span id="more"></span>
+<h1 id="1、历史"><a href="#1、历史" class="headerlink" title="1、历史"></a>1、历史</h1><p>伊斯坦布尔地势较为平坦，起伏变化不大，地表较破碎。 属地中海气候。 伊斯坦布尔始建于公元前660年，希腊人在今“皇宫鼻”的地方筑城，取名拜占庭。324年，罗马帝国君士坦丁从罗马迁都于此，将其重建，改名君士坦丁堡，别称新罗马。395年成为东罗马帝国首都。 1204年第四次十字军东征占领，使得城市遭受了很大破坏。 1453年奥斯曼帝国苏丹迈赫迈特攻占并灭亡了东罗马，改名为伊斯坦布尔，至1923年始终为奥斯曼帝国首都。 2018年进入世界一线城市行列。</p>
+<h1 id="2、蓝色清真寺，伊斯坦布尔最著名的清真寺"><a href="#2、蓝色清真寺，伊斯坦布尔最著名的清真寺" class="headerlink" title="2、蓝色清真寺，伊斯坦布尔最著名的清真寺"></a>2、蓝色清真寺，伊斯坦布尔最著名的清真寺</h1><p><img src="https://visitistanbulofficial.com/wp-content/uploads/2022/06/Blue-Mosque-Istanbul-scaled.jpeg" alt="Blue-Mosque-Istanbul"><br>1597年，伟大的奥斯曼帝国刚刚摆脱了对哈布斯堡帝国和波斯帝国的两次毁灭性战争。因此，苏丹艾哈迈德一世决定通过为首都提供一个新的礼拜场所来重申奥斯曼帝国的权力。就这样开始了伟大的工作 苏丹艾哈迈德清真寺，被称为 伊斯坦布尔蓝色清真寺.<br>由于缺乏战争收益，苏丹从国库中筹集了建造新清真寺的资金。这个选择引起了不小的轰动。但尽管有讨论，该项目还是在充满政治意义的空间中进行的。<br>事实上，它建在君士坦丁堡大皇宫遗址的一部分，紧邻君士坦丁堡大清真寺。 圣索非亚大教堂。附近还有 跑马场，现在的苏丹哈米特广场，又一个充满意义的地方。著名帝国建筑师 Mi’mār Sinān 的学生 Sedefkar Mehmed Agha 被选中。</p>
+<p>这个 在伊斯坦布尔的蓝色清真寺 变得如此出名，以至于在 1953 年至 1976 年间，它的图像被选印在土耳其 500 里拉纸币上。由于其蜿蜒的曲线和六个尖塔，它也是伊斯坦布尔最受拍照关注的纪念碑。今天，它仍然像过去一样发挥其作用。除了宗教机构外，它还设有许多其他公共机构。<br>事实上，这里有一所宗教学校（古兰经学校）、为穷人提供的食堂和庇护所、哈曼和商店。这些空间的租金用于清真寺的维护，并为当地购物提供了独特的机会。<br><img src="https://visitistanbulofficial.com/wp-content/uploads/2022/06/View-from-Hagia-Sophia.png" alt="View-from-Hagia-Sophia"></p>
+]]></content>
+      <tags>
+        <tag>WORLD</tag>
+      </tags>
   </entry>
 </search>

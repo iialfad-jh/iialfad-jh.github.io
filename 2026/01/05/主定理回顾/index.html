@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="主定理（Master Theorem） 是算法分析中用于解决分治法（Divide and Conquer） 递归关系式的一个“万能公式”。它能让你直接通过公式推导出时间复杂度，而不需要画递归树或进行复杂的数学归纳。 以下是它计算复杂度的详细步骤和逻辑：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="主定理回顾">
+<meta property="og:url" content="http://example.com/2026/01/05/%E4%B8%BB%E5%AE%9A%E7%90%86%E5%9B%9E%E9%A1%BE/index.html">
+<meta property="og:site_name" content="IIALFAD">
+<meta property="og:description" content="主定理（Master Theorem） 是算法分析中用于解决分治法（Divide and Conquer） 递归关系式的一个“万能公式”。它能让你直接通过公式推导出时间复杂度，而不需要画递归树或进行复杂的数学归纳。 以下是它计算复杂度的详细步骤和逻辑：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-01-05T06:34:45.000Z">
+<meta property="article:modified_time" content="2026-01-05T06:37:54.133Z">
+<meta property="article:author" content="ZJH">
+<meta property="article:tag" content="Algorithm">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/01/05/%E4%B8%BB%E5%AE%9A%E7%90%86%E5%9B%9E%E9%A1%BE/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/01/05/%E4%B8%BB%E5%AE%9A%E7%90%86%E5%9B%9E%E9%A1%BE/","path":"2026/01/05/主定理回顾/","title":"主定理回顾"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>主定理回顾 | IIALFAD</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="IIALFAD" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">IIALFAD</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个 RUNOOB 博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%80%82%E7%94%A8%E5%BD%A2%E5%BC%8F"><span class="nav-text">1. 适用形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%A0%B8%E5%BF%83%E9%80%BB%E8%BE%91%EF%BC%9A%E4%B8%80%E5%9C%BA%E2%80%9C%E6%8B%94%E6%B2%B3%E6%AF%94%E8%B5%9B%E2%80%9D"><span class="nav-text">2. 核心逻辑：一场“拔河比赛”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%B8%89%E7%A7%8D%E6%83%85%E5%86%B5%EF%BC%88%E8%AE%A1%E7%AE%97%E8%A7%84%E5%88%99%EF%BC%89"><span class="nav-text">3. 三种情况（计算规则）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%83%85%E5%86%B5-1%EF%BC%9A%E5%8F%B6%E5%AD%90%E8%8A%82%E7%82%B9%E5%8D%A0%E4%B8%BB%E5%AF%BC%EF%BC%88%E5%A4%B4%E8%BD%BB%E8%84%9A%E9%87%8D%EF%BC%89"><span class="nav-text">情况 1：叶子节点占主导（头轻脚重）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%83%85%E5%86%B5-2%EF%BC%9A%E5%8A%BF%E5%9D%87%E5%8A%9B%E6%95%8C%EF%BC%88%E5%B9%B3%E8%A1%A1%EF%BC%89"><span class="nav-text">情况 2：势均力敌（平衡）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%83%85%E5%86%B5-3%EF%BC%9A%E6%A0%B9%E8%8A%82%E7%82%B9%E5%8D%A0%E4%B8%BB%E5%AF%BC%EF%BC%88%E5%A4%B4%E9%87%8D%E8%84%9A%E8%BD%BB%EF%BC%89"><span class="nav-text">情况 3：根节点占主导（头重脚轻）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%BF%AB%E9%80%9F%E8%AE%B0%E5%BF%86%E5%8F%A3%E8%AF%80"><span class="nav-text">4. 快速记忆口诀</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E4%B8%8D%E8%83%BD%E4%BD%BF%E7%94%A8%E4%B8%BB%E5%AE%9A%E7%90%86%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-text">5. 不能使用主定理的情况</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZJH"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">ZJH</p>
+  <div class="site-description" itemprop="description">学习笔记</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:jiahhhao@outlook.com" title="E-Mail → mailto:jiahhhao@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/01/05/%E4%B8%BB%E5%AE%9A%E7%90%86%E5%9B%9E%E9%A1%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="ZJH">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IIALFAD">
+      <meta itemprop="description" content="学习笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="主定理回顾 | IIALFAD">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          主定理回顾
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-01-05 14:34:45 / 修改时间：14:37:54" itemprop="dateCreated datePublished" datetime="2026-01-05T14:34:45+08:00">2026-01-05</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>947</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><strong>主定理（Master Theorem）</strong> 是算法分析中用于解决<strong>分治法（Divide and Conquer）</strong> 递归关系式的一个“万能公式”。它能让你直接通过公式推导出时间复杂度，而不需要画递归树或进行复杂的数学归纳。</p>
+<p>以下是它计算复杂度的详细步骤和逻辑：</p>
+<span id="more"></span>
+
+<hr>
+<h3 id="1-适用形式"><a href="#1-适用形式" class="headerlink" title="1. 适用形式"></a>1. 适用形式</h3><p>主定理专门解决如下形式的递推公式：</p>
+<p>$$T(n) &#x3D; aT\left(\frac{n}{b}\right) + f(n)$$</p>
+<p>其中：</p>
+<ul>
+<li><strong>$n$</strong>：问题的规模。</li>
+<li><strong>$a$</strong>：子问题的数量（$a \ge 1$）。</li>
+<li><strong>$b$</strong>：每个子问题缩小的倍数（$b &gt; 1$）。</li>
+<li><strong>$f(n)$</strong>：当前层（递归之外）所做的工作，通常是<strong>分解问题</strong>和<strong>合并结果</strong>的时间。</li>
+</ul>
+<hr>
+<h3 id="2-核心逻辑：一场“拔河比赛”"><a href="#2-核心逻辑：一场“拔河比赛”" class="headerlink" title="2. 核心逻辑：一场“拔河比赛”"></a>2. 核心逻辑：一场“拔河比赛”</h3><p>主定理的本质是在比较两股力量的大小：</p>
+<ol>
+<li><strong>$n^{\log_b a}$</strong>：代表<strong>递归树底部的叶子节点数量</strong>（或者说是最后一层的工作量）。</li>
+<li><strong>$f(n)$</strong>：代表<strong>递归树根节点（顶层）的工作量</strong>。</li>
+</ol>
+<p><strong>谁大，复杂度就由谁决定。</strong></p>
+<hr>
+<h3 id="3-三种情况（计算规则）"><a href="#3-三种情况（计算规则）" class="headerlink" title="3. 三种情况（计算规则）"></a>3. 三种情况（计算规则）</h3><p>我们需要比较 $f(n)$ 和 $n^{\log_b a}$ 的大小关系。</p>
+<h4 id="情况-1：叶子节点占主导（头轻脚重）"><a href="#情况-1：叶子节点占主导（头轻脚重）" class="headerlink" title="情况 1：叶子节点占主导（头轻脚重）"></a>情况 1：叶子节点占主导（头轻脚重）</h4><p>如果 $f(n)$ <strong>小于</strong> $n^{\log_b a}$ （并且是多项式级的小，即小了 $n^\epsilon$ 倍），那么递归到底部的工作量最大。</p>
+<ul>
+<li><strong>条件</strong>：$f(n) &#x3D; O(n^{\log_b a - \epsilon})$，其中 $\epsilon &gt; 0$。</li>
+<li><strong>结果</strong>：<br>$$T(n) &#x3D; \Theta(n^{\log_b a})$$</li>
+</ul>
+<blockquote>
+<p><strong>例子：</strong> $T(n) &#x3D; 9T(n&#x2F;3) + n$</p>
+<ul>
+<li>$a&#x3D;9, b&#x3D;3, f(n)&#x3D;n$</li>
+<li>计算关键值：$n^{\log_b a} &#x3D; n^{\log_3 9} &#x3D; n^2$</li>
+<li>比较：$f(n)&#x3D;n$ 远小于 $n^2$。</li>
+<li>结论：$T(n) &#x3D; \Theta(n^2)$</li>
+</ul>
+</blockquote>
+<h4 id="情况-2：势均力敌（平衡）"><a href="#情况-2：势均力敌（平衡）" class="headerlink" title="情况 2：势均力敌（平衡）"></a>情况 2：势均力敌（平衡）</h4><p>如果 $f(n)$ 和 $n^{\log_b a}$ <strong>同阶</strong>（大小相当），那么每一层的工作量都差不多。总复杂度 &#x3D; 每层工作量 $\times$ 层数（$\log n$）。</p>
+<ul>
+<li><strong>条件</strong>：$f(n) &#x3D; \Theta(n^{\log_b a})$。<ul>
+<li><em>注：有时候会遇到带 $\log$ 的情况，如 $f(n) &#x3D; \Theta(n^{\log_b a} \log^k n)$，结果就是 $\Theta(n^{\log_b a} \log^{k+1} n)$。</em></li>
+</ul>
+</li>
+<li><strong>结果</strong>：<br>$$T(n) &#x3D; \Theta(n^{\log_b a} \cdot \log n)$$</li>
+</ul>
+<blockquote>
+<p><strong>例子（归并排序）：</strong> $T(n) &#x3D; 2T(n&#x2F;2) + n$</p>
+<ul>
+<li>$a&#x3D;2, b&#x3D;2, f(n)&#x3D;n$</li>
+<li>计算关键值：$n^{\log_b a} &#x3D; n^{\log_2 2} &#x3D; n^1 &#x3D; n$</li>
+<li>比较：$f(n)$ 和关键值相等。</li>
+<li>结论：$T(n) &#x3D; \Theta(n \log n)$</li>
+</ul>
+</blockquote>
+<h4 id="情况-3：根节点占主导（头重脚轻）"><a href="#情况-3：根节点占主导（头重脚轻）" class="headerlink" title="情况 3：根节点占主导（头重脚轻）"></a>情况 3：根节点占主导（头重脚轻）</h4><p>如果 $f(n)$ <strong>大于</strong> $n^{\log_b a}$ （多项式级的大），且满足正则条件（Regularity Condition），那么顶层的工作量最大，递归下去的工作量忽略不计。</p>
+<ul>
+<li><strong>条件</strong>：$f(n) &#x3D; \Omega(n^{\log_b a + \epsilon})$，且 $af(n&#x2F;b) \le c f(n)$ （$c &lt; 1$）。</li>
+<li><strong>结果</strong>：<br>$$T(n) &#x3D; \Theta(f(n))$$</li>
+</ul>
+<blockquote>
+<p><strong>例子：</strong> $T(n) &#x3D; 3T(n&#x2F;4) + n \log n$</p>
+<ul>
+<li>$a&#x3D;3, b&#x3D;4, f(n) &#x3D; n \log n$</li>
+<li>计算关键值：$n^{\log_4 3} \approx n^{0.793}$</li>
+<li>比较：$f(n)$ 是 $n^{1+}$ 级别，显然比 $n^{0.793}$ 大。</li>
+<li>结论：$T(n) &#x3D; \Theta(n \log n)$ （即复杂度由 $f(n)$ 决定）。</li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="4-快速记忆口诀"><a href="#4-快速记忆口诀" class="headerlink" title="4. 快速记忆口诀"></a>4. 快速记忆口诀</h3><p>算出 <strong>$K &#x3D; \log_b a$</strong>，比较 <strong>$n^K$</strong> 和 <strong>$f(n)$</strong>：</p>
+<ol>
+<li><strong>$n^K$ 更大</strong> $\rightarrow$ 复杂度是 $O(n^K)$</li>
+<li><strong>一样大</strong> $\rightarrow$ 复杂度是 $O(n^K \log n)$</li>
+<li><strong>$f(n)$ 更大</strong> $\rightarrow$ 复杂度是 $O(f(n))$</li>
+</ol>
+<p><em>(注意：这里的“大”和“小”必须是多项式级别的差异，不能只是相差一个 $\log n$，除非属于情况2的扩展)</em></p>
+<hr>
+<h3 id="5-不能使用主定理的情况"><a href="#5-不能使用主定理的情况" class="headerlink" title="5. 不能使用主定理的情况"></a>5. 不能使用主定理的情况</h3><p>主定理虽然好用，但不是所有递归式都能解。以下情况失效：</p>
+<ol>
+<li><strong>$T(n)$ 不是单调的</strong>（例如 $f(n) &#x3D; \sin n$）。</li>
+<li><strong>$f(n)$ 不是多项式级的差别</strong>。<ul>
+<li>例如：$T(n) &#x3D; 2T(n&#x2F;2) + n&#x2F;\log n$。</li>
+<li>这里 $n^{\log_2 2} &#x3D; n$，而 $f(n) &#x3D; n&#x2F;\log n$。虽然 $f(n)$ 比 $n$ 小，但它不是“多项式级的小”（$n^\epsilon$），只是小了一个对数因子。这就落入了情况1和情况2的<strong>缝隙</strong>中，不能用主定理。</li>
+</ul>
+</li>
+<li><strong>$a$ 或 $b$ 不是常数</strong>。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/01/03/%E4%BC%8A%E6%96%AF%E5%9D%A6%E5%B8%83%E5%B0%94/" rel="prev" title="伊斯坦布尔">
+                  <i class="fa fa-angle-left"></i> 伊斯坦布尔
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/01/22/Less-Static-More-Private/" rel="next" title="顶会论文阅读[1&#x2F;] | ICCV 2025">
+                  顶会论文阅读[1/] | ICCV 2025 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZJH</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">7k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">24 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div> -->
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

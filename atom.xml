@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-12-26T16:09:50.865Z</updated>
+  <updated>2026-01-22T14:38:46.238Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,20 +17,88 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Hello World</title>
-    <link href="http://example.com/2025/12/27/hello-world/"/>
-    <id>http://example.com/2025/12/27/hello-world/</id>
-    <published>2025-12-26T16:09:50.865Z</published>
-    <updated>2025-12-26T16:09:50.865Z</updated>
+    <title>顶会论文阅读[2/] | ICCV 2025</title>
+    <link href="http://example.com/2026/01/22/VPR-CLOAK/"/>
+    <id>http://example.com/2026/01/22/VPR-CLOAK/</id>
+    <published>2026-01-22T13:45:50.000Z</published>
+    <updated>2026-01-22T14:38:46.238Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for</summary>
-      
+    <summary type="html">&lt;hr&gt;
+&lt;h1 id=&quot;VPR-Cloak-针对视觉地点识别隐私保护的首次探索&quot;&gt;&lt;a href=&quot;#VPR-Cloak-针对视觉地点识别隐私保护的首次探索&quot; class=&quot;headerlink&quot; title=&quot;VPR-Cloak: 针对视觉地点识别隐私保护的首次探索&quot;&gt;&lt;/a&gt;VPR-Cloak: 针对视觉地点识别隐私保护的首次探索&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;论文题目&lt;/strong&gt;：VPR-Cloak: A First Look at Privacy Cloak Against Visual Place Recognition&lt;br&gt;&lt;strong&gt;核心任务&lt;/strong&gt;：针对视觉地点识别（VPR）系统的图像隐私保护，防止未经授权的位置信息泄露。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;本文介绍的 &lt;strong&gt;VPR-Cloak&lt;/strong&gt; 方法，通过一种&lt;strong&gt;显著性感知先验引导的扰动优化（Saliency-Aware Prior Guided Perturbation Optimization, SAP-PO）&lt;/strong&gt; 框架，旨在解决视觉地点识别场景下，现有隐私保护方法在黑盒攻击鲁棒性、视觉不可察觉性以及实时处理性能方面难以兼顾的问题。&lt;/p&gt;
+&lt;img src=&quot;/images/vpr-cloak/introduction.png&quot; alt=&quot;introduction&quot; style=&quot;width: 50%; display: block; margin: 0 auto;&quot; /&gt;</summary>
     
     
     
+    
+    <category term="Private" scheme="http://example.com/tags/Private/"/>
+    
+    <category term="论文笔记" scheme="http://example.com/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>顶会论文阅读[1/] | ICCV 2025</title>
+    <link href="http://example.com/2026/01/22/Less-Static-More-Private/"/>
+    <id>http://example.com/2026/01/22/Less-Static-More-Private/</id>
+    <published>2026-01-22T05:07:41.000Z</published>
+    <updated>2026-01-22T13:57:19.908Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别&quot;&gt;&lt;a href=&quot;#【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别&quot; class=&quot;headerlink&quot; title=&quot;【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别&quot;&gt;&lt;/a&gt;【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;论文题目&lt;/strong&gt;：Less Static, More Private: Towards Transferable Privacy-Preserving Action Recognition by Generative Decoupled Learning&lt;br&gt;&lt;strong&gt;核心任务&lt;/strong&gt;：隐私保护动作识别 (Privacy-Preserving Action Recognition, PPAR)、域适应 (Domain Adaptation)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;本文介绍的 &lt;strong&gt;GenPriv&lt;/strong&gt; 方法，通过一种新颖的 &lt;strong&gt;生成式解耦学习（Generative Decoupled Learning）&lt;/strong&gt; 框架，旨在解决跨域场景下的隐私保护与动作识别的权衡问题。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/less-static-more-private/1.png&quot; alt=&quot;Comparison between the existing PPAR methods and ourGenPriv.&quot;&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Private" scheme="http://example.com/tags/Private/"/>
+    
+    <category term="PPAR" scheme="http://example.com/tags/PPAR/"/>
+    
+    <category term="Domain Adaptation" scheme="http://example.com/tags/Domain-Adaptation/"/>
+    
+    <category term="论文笔记" scheme="http://example.com/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>主定理回顾</title>
+    <link href="http://example.com/2026/01/05/%E4%B8%BB%E5%AE%9A%E7%90%86%E5%9B%9E%E9%A1%BE/"/>
+    <id>http://example.com/2026/01/05/%E4%B8%BB%E5%AE%9A%E7%90%86%E5%9B%9E%E9%A1%BE/</id>
+    <published>2026-01-05T06:34:45.000Z</published>
+    <updated>2026-01-05T06:37:54.133Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;strong&gt;主定理（Master Theorem）&lt;/strong&gt; 是算法分析中用于解决&lt;strong&gt;分治法（Divide and Conquer）&lt;/strong&gt; 递归关系式的一个“万能公式”。它能让你直接通过公式推导出时间复杂度，而不需要画递归树或进行复杂的数学归纳。&lt;/p&gt;
+&lt;p&gt;以下是它计算复杂度的详细步骤和逻辑：&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Algorithm" scheme="http://example.com/tags/Algorithm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>伊斯坦布尔</title>
+    <link href="http://example.com/2026/01/03/%E4%BC%8A%E6%96%AF%E5%9D%A6%E5%B8%83%E5%B0%94/"/>
+    <id>http://example.com/2026/01/03/%E4%BC%8A%E6%96%AF%E5%9D%A6%E5%B8%83%E5%B0%94/</id>
+    <published>2026-01-03T14:04:31.000Z</published>
+    <updated>2026-01-07T08:53:31.323Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;土耳其有很多著名的城市与景点，其第一大都市伊斯坦布尔是欧洲最大的城市，横跨欧亚大陆，曾被拿破仑誉为“世界的首都”，这里有象征着拜占庭帝国的圣索菲亚大教堂，有代表了东正教最正统文化的圣乔治主座堂，也有承载了奥斯曼帝国记忆的托普卡帕宫。甚至连凯宾斯基运营的酒店Çiragan Palace Kempinski Instanbul，都曾经是奥斯曼帝国苏丹的皇宫。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="WORLD" scheme="http://example.com/tags/WORLD/"/>
     
   </entry>
   
