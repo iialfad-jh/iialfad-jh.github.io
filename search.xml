@@ -240,7 +240,7 @@
     <title>顶会论文阅读[2/] | ICCV 2025</title>
     <url>/2026/01/22/VPR-CLOAK/</url>
     <content><![CDATA[<hr>
-<h1 id="VPR-Cloak-针对视觉地点识别隐私保护的首次探索"><a href="#VPR-Cloak-针对视觉地点识别隐私保护的首次探索" class="headerlink" title="VPR-Cloak: 针对视觉地点识别隐私保护的首次探索"></a>VPR-Cloak: 针对视觉地点识别隐私保护的首次探索</h1><blockquote>
+<h1 id="【论文解读】VPR-Cloak-针对视觉地点识别隐私保护的首次探索"><a href="#【论文解读】VPR-Cloak-针对视觉地点识别隐私保护的首次探索" class="headerlink" title="【论文解读】VPR-Cloak: 针对视觉地点识别隐私保护的首次探索"></a>【论文解读】VPR-Cloak: 针对视觉地点识别隐私保护的首次探索</h1><blockquote>
 <p><strong>论文题目</strong>：VPR-Cloak: A First Look at Privacy Cloak Against Visual Place Recognition<br><strong>核心任务</strong>：针对视觉地点识别（VPR）系统的图像隐私保护，防止未经授权的位置信息泄露。</p>
 </blockquote>
 <p>本文介绍的 <strong>VPR-Cloak</strong> 方法，通过一种<strong>显著性感知先验引导的扰动优化（Saliency-Aware Prior Guided Perturbation Optimization, SAP-PO）</strong> 框架，旨在解决视觉地点识别场景下，现有隐私保护方法在黑盒攻击鲁棒性、视觉不可察觉性以及实时处理性能方面难以兼顾的问题。</p>

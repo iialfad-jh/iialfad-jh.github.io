@@ -3,11 +3,11 @@
   <title>IIALFAD</title>
   
   <subtitle>一个 RUNOOB 博客</subtitle>
-  <link href="http://example.com/atom.xml" rel="self"/>
+  <link href="https://iialfad-jh.github.io/atom.xml" rel="self"/>
   
-  <link href="http://example.com/"/>
-  <updated>2026-01-22T14:38:46.238Z</updated>
-  <id>http://example.com/</id>
+  <link href="https://iialfad-jh.github.io/"/>
+  <updated>2026-01-22T14:41:27.888Z</updated>
+  <id>https://iialfad-jh.github.io/</id>
   
   <author>
     <name>ZJH</name>
@@ -18,14 +18,14 @@
   
   <entry>
     <title>顶会论文阅读[2/] | ICCV 2025</title>
-    <link href="http://example.com/2026/01/22/VPR-CLOAK/"/>
-    <id>http://example.com/2026/01/22/VPR-CLOAK/</id>
+    <link href="https://iialfad-jh.github.io/2026/01/22/VPR-CLOAK/"/>
+    <id>https://iialfad-jh.github.io/2026/01/22/VPR-CLOAK/</id>
     <published>2026-01-22T13:45:50.000Z</published>
-    <updated>2026-01-22T14:38:46.238Z</updated>
+    <updated>2026-01-22T14:41:27.888Z</updated>
     
     
     <summary type="html">&lt;hr&gt;
-&lt;h1 id=&quot;VPR-Cloak-针对视觉地点识别隐私保护的首次探索&quot;&gt;&lt;a href=&quot;#VPR-Cloak-针对视觉地点识别隐私保护的首次探索&quot; class=&quot;headerlink&quot; title=&quot;VPR-Cloak: 针对视觉地点识别隐私保护的首次探索&quot;&gt;&lt;/a&gt;VPR-Cloak: 针对视觉地点识别隐私保护的首次探索&lt;/h1&gt;&lt;blockquote&gt;
+&lt;h1 id=&quot;【论文解读】VPR-Cloak-针对视觉地点识别隐私保护的首次探索&quot;&gt;&lt;a href=&quot;#【论文解读】VPR-Cloak-针对视觉地点识别隐私保护的首次探索&quot; class=&quot;headerlink&quot; title=&quot;【论文解读】VPR-Cloak: 针对视觉地点识别隐私保护的首次探索&quot;&gt;&lt;/a&gt;【论文解读】VPR-Cloak: 针对视觉地点识别隐私保护的首次探索&lt;/h1&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;论文题目&lt;/strong&gt;：VPR-Cloak: A First Look at Privacy Cloak Against Visual Place Recognition&lt;br&gt;&lt;strong&gt;核心任务&lt;/strong&gt;：针对视觉地点识别（VPR）系统的图像隐私保护，防止未经授权的位置信息泄露。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;本文介绍的 &lt;strong&gt;VPR-Cloak&lt;/strong&gt; 方法，通过一种&lt;strong&gt;显著性感知先验引导的扰动优化（Saliency-Aware Prior Guided Perturbation Optimization, SAP-PO）&lt;/strong&gt; 框架，旨在解决视觉地点识别场景下，现有隐私保护方法在黑盒攻击鲁棒性、视觉不可察觉性以及实时处理性能方面难以兼顾的问题。&lt;/p&gt;
@@ -34,16 +34,16 @@
     
     
     
-    <category term="Private" scheme="http://example.com/tags/Private/"/>
+    <category term="Private" scheme="https://iialfad-jh.github.io/tags/Private/"/>
     
-    <category term="论文笔记" scheme="http://example.com/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"/>
+    <category term="论文笔记" scheme="https://iialfad-jh.github.io/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
   <entry>
     <title>顶会论文阅读[1/] | ICCV 2025</title>
-    <link href="http://example.com/2026/01/22/Less-Static-More-Private/"/>
-    <id>http://example.com/2026/01/22/Less-Static-More-Private/</id>
+    <link href="https://iialfad-jh.github.io/2026/01/22/Less-Static-More-Private/"/>
+    <id>https://iialfad-jh.github.io/2026/01/22/Less-Static-More-Private/</id>
     <published>2026-01-22T05:07:41.000Z</published>
     <updated>2026-01-22T13:57:19.908Z</updated>
     
@@ -57,20 +57,20 @@
     
     
     
-    <category term="Private" scheme="http://example.com/tags/Private/"/>
+    <category term="Private" scheme="https://iialfad-jh.github.io/tags/Private/"/>
     
-    <category term="PPAR" scheme="http://example.com/tags/PPAR/"/>
+    <category term="PPAR" scheme="https://iialfad-jh.github.io/tags/PPAR/"/>
     
-    <category term="Domain Adaptation" scheme="http://example.com/tags/Domain-Adaptation/"/>
+    <category term="Domain Adaptation" scheme="https://iialfad-jh.github.io/tags/Domain-Adaptation/"/>
     
-    <category term="论文笔记" scheme="http://example.com/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"/>
+    <category term="论文笔记" scheme="https://iialfad-jh.github.io/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
   <entry>
     <title>主定理回顾</title>
-    <link href="http://example.com/2026/01/05/%E4%B8%BB%E5%AE%9A%E7%90%86%E5%9B%9E%E9%A1%BE/"/>
-    <id>http://example.com/2026/01/05/%E4%B8%BB%E5%AE%9A%E7%90%86%E5%9B%9E%E9%A1%BE/</id>
+    <link href="https://iialfad-jh.github.io/2026/01/05/%E4%B8%BB%E5%AE%9A%E7%90%86%E5%9B%9E%E9%A1%BE/"/>
+    <id>https://iialfad-jh.github.io/2026/01/05/%E4%B8%BB%E5%AE%9A%E7%90%86%E5%9B%9E%E9%A1%BE/</id>
     <published>2026-01-05T06:34:45.000Z</published>
     <updated>2026-01-05T06:37:54.133Z</updated>
     
@@ -81,14 +81,14 @@
     
     
     
-    <category term="Algorithm" scheme="http://example.com/tags/Algorithm/"/>
+    <category term="Algorithm" scheme="https://iialfad-jh.github.io/tags/Algorithm/"/>
     
   </entry>
   
   <entry>
     <title>伊斯坦布尔</title>
-    <link href="http://example.com/2026/01/03/%E4%BC%8A%E6%96%AF%E5%9D%A6%E5%B8%83%E5%B0%94/"/>
-    <id>http://example.com/2026/01/03/%E4%BC%8A%E6%96%AF%E5%9D%A6%E5%B8%83%E5%B0%94/</id>
+    <link href="https://iialfad-jh.github.io/2026/01/03/%E4%BC%8A%E6%96%AF%E5%9D%A6%E5%B8%83%E5%B0%94/"/>
+    <id>https://iialfad-jh.github.io/2026/01/03/%E4%BC%8A%E6%96%AF%E5%9D%A6%E5%B8%83%E5%B0%94/</id>
     <published>2026-01-03T14:04:31.000Z</published>
     <updated>2026-01-07T08:53:31.323Z</updated>
     
@@ -98,7 +98,7 @@
     
     
     
-    <category term="WORLD" scheme="http://example.com/tags/WORLD/"/>
+    <category term="WORLD" scheme="https://iialfad-jh.github.io/tags/WORLD/"/>
     
   </entry>
   
