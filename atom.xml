@@ -6,7 +6,7 @@
   <link href="https://iialfad-jh.github.io/atom.xml" rel="self"/>
   
   <link href="https://iialfad-jh.github.io/"/>
-  <updated>2026-01-22T14:41:27.888Z</updated>
+  <updated>2026-01-23T13:31:03.763Z</updated>
   <id>https://iialfad-jh.github.io/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>顶会论文阅读[2/] | ICCV 2025</title>
+    <title>顶会论文阅读[2/] | ICCV 2025 | VPR-Cloak</title>
     <link href="https://iialfad-jh.github.io/2026/01/22/VPR-CLOAK/"/>
     <id>https://iialfad-jh.github.io/2026/01/22/VPR-CLOAK/</id>
     <published>2026-01-22T13:45:50.000Z</published>
-    <updated>2026-01-22T14:41:27.888Z</updated>
+    <updated>2026-01-23T13:31:03.763Z</updated>
     
     
     <summary type="html">&lt;hr&gt;
@@ -38,14 +38,18 @@
     
     <category term="论文笔记" scheme="https://iialfad-jh.github.io/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"/>
     
+    <category term="ICCV 2025" scheme="https://iialfad-jh.github.io/tags/ICCV-2025/"/>
+    
+    <category term="VPR" scheme="https://iialfad-jh.github.io/tags/VPR/"/>
+    
   </entry>
   
   <entry>
-    <title>顶会论文阅读[1/] | ICCV 2025</title>
+    <title>顶会论文阅读[1/] | ICCV 2025 | GenPriv</title>
     <link href="https://iialfad-jh.github.io/2026/01/22/Less-Static-More-Private/"/>
     <id>https://iialfad-jh.github.io/2026/01/22/Less-Static-More-Private/</id>
     <published>2026-01-22T05:07:41.000Z</published>
-    <updated>2026-01-22T13:57:19.908Z</updated>
+    <updated>2026-01-23T13:30:55.627Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别&quot;&gt;&lt;a href=&quot;#【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别&quot; class=&quot;headerlink&quot; title=&quot;【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别&quot;&gt;&lt;/a&gt;【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别&lt;/h1&gt;&lt;blockquote&gt;
@@ -64,6 +68,8 @@
     <category term="Domain Adaptation" scheme="https://iialfad-jh.github.io/tags/Domain-Adaptation/"/>
     
     <category term="论文笔记" scheme="https://iialfad-jh.github.io/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="ICCV 2025" scheme="https://iialfad-jh.github.io/tags/ICCV-2025/"/>
     
   </entry>
   
@@ -90,7 +96,7 @@
     <link href="https://iialfad-jh.github.io/2026/01/03/%E4%BC%8A%E6%96%AF%E5%9D%A6%E5%B8%83%E5%B0%94/"/>
     <id>https://iialfad-jh.github.io/2026/01/03/%E4%BC%8A%E6%96%AF%E5%9D%A6%E5%B8%83%E5%B0%94/</id>
     <published>2026-01-03T14:04:31.000Z</published>
-    <updated>2026-01-07T08:53:31.323Z</updated>
+    <updated>2026-01-23T13:31:21.041Z</updated>
     
     
     <summary type="html">&lt;p&gt;土耳其有很多著名的城市与景点，其第一大都市伊斯坦布尔是欧洲最大的城市，横跨欧亚大陆，曾被拿破仑誉为“世界的首都”，这里有象征着拜占庭帝国的圣索菲亚大教堂，有代表了东正教最正统文化的圣乔治主座堂，也有承载了奥斯曼帝国记忆的托普卡帕宫。甚至连凯宾斯基运营的酒店Çiragan Palace Kempinski Instanbul，都曾经是奥斯曼帝国苏丹的皇宫。&lt;/p&gt;</summary>
@@ -98,7 +104,7 @@
     
     
     
-    <category term="WORLD" scheme="https://iialfad-jh.github.io/tags/WORLD/"/>
+    <category term="Travle" scheme="https://iialfad-jh.github.io/tags/Travle/"/>
     
   </entry>
   

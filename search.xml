@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>顶会论文阅读[1/] | ICCV 2025</title>
+    <title>顶会论文阅读[1/] | ICCV 2025 | GenPriv</title>
     <url>/2026/01/22/Less-Static-More-Private/</url>
     <content><![CDATA[<h1 id="【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别"><a href="#【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别" class="headerlink" title="【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别"></a>【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别</h1><blockquote>
 <p><strong>论文题目</strong>：Less Static, More Private: Towards Transferable Privacy-Preserving Action Recognition by Generative Decoupled Learning<br><strong>核心任务</strong>：隐私保护动作识别 (Privacy-Preserving Action Recognition, PPAR)、域适应 (Domain Adaptation)</p>
@@ -139,6 +139,7 @@
         <tag>PPAR</tag>
         <tag>Domain Adaptation</tag>
         <tag>论文笔记</tag>
+        <tag>ICCV 2025</tag>
       </tags>
   </entry>
   <entry>
@@ -237,7 +238,7 @@
       </tags>
   </entry>
   <entry>
-    <title>顶会论文阅读[2/] | ICCV 2025</title>
+    <title>顶会论文阅读[2/] | ICCV 2025 | VPR-Cloak</title>
     <url>/2026/01/22/VPR-CLOAK/</url>
     <content><![CDATA[<hr>
 <h1 id="【论文解读】VPR-Cloak-针对视觉地点识别隐私保护的首次探索"><a href="#【论文解读】VPR-Cloak-针对视觉地点识别隐私保护的首次探索" class="headerlink" title="【论文解读】VPR-Cloak: 针对视觉地点识别隐私保护的首次探索"></a>【论文解读】VPR-Cloak: 针对视觉地点识别隐私保护的首次探索</h1><blockquote>
@@ -292,6 +293,8 @@
       <tags>
         <tag>Private</tag>
         <tag>论文笔记</tag>
+        <tag>ICCV 2025</tag>
+        <tag>VPR</tag>
       </tags>
   </entry>
   <entry>
@@ -304,7 +307,7 @@
 <p>这个 在伊斯坦布尔的蓝色清真寺 变得如此出名，以至于在 1953 年至 1976 年间，它的图像被选印在土耳其 500 里拉纸币上。由于其蜿蜒的曲线和六个尖塔，它也是伊斯坦布尔最受拍照关注的纪念碑。今天，它仍然像过去一样发挥其作用。除了宗教机构外，它还设有许多其他公共机构。<br>事实上，这里有一所宗教学校（古兰经学校）、为穷人提供的食堂和庇护所、哈曼和商店。这些空间的租金用于清真寺的维护，并为当地购物提供了独特的机会。<br><img src="https://visitistanbulofficial.com/wp-content/uploads/2022/06/View-from-Hagia-Sophia.png" alt="View-from-Hagia-Sophia"></p>
 ]]></content>
       <tags>
-        <tag>WORLD</tag>
+        <tag>Travle</tag>
       </tags>
   </entry>
 </search>
