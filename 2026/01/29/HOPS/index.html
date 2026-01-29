@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"iialfad-jh.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="【论文解读】HOPS：一种超维单点符号来表示所有地点 论文题目： A Hyperdimensional One Place Signature to Represent Them All: Stackable Descriptors For Visual Place Recognition   核心任务： 视觉地点识别（Visual Place Recognition, VPR）在剧烈环境变化下的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="顶会论文阅读[3&#x2F;] | ICCV 2025 | HOPS">
+<meta property="og:url" content="https://iialfad-jh.github.io/2026/01/29/HOPS/index.html">
+<meta property="og:site_name" content="IIALFAD">
+<meta property="og:description" content="【论文解读】HOPS：一种超维单点符号来表示所有地点 论文题目： A Hyperdimensional One Place Signature to Represent Them All: Stackable Descriptors For Visual Place Recognition   核心任务： 视觉地点识别（Visual Place Recognition, VPR）在剧烈环境变化下的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://iialfad-jh.github.io/images/hops/inreoduction.png">
+<meta property="og:image" content="https://iialfad-jh.github.io/images/hops/3.png">
+<meta property="og:image" content="https://iialfad-jh.github.io/images/hops/4.png">
+<meta property="og:image" content="https://iialfad-jh.github.io/images/hops/7.png">
+<meta property="og:image" content="https://iialfad-jh.github.io/images/hops/6.png">
+<meta property="article:published_time" content="2026-01-29T07:35:55.000Z">
+<meta property="article:modified_time" content="2026-01-29T08:36:16.770Z">
+<meta property="article:author" content="ZJH">
+<meta property="article:tag" content="Gaussian Random Projection(GRP)">
+<meta property="article:tag" content="Hyperdimensional One Place Signatures(HDC)">
+<meta property="article:tag" content="ICCV 2025">
+<meta property="article:tag" content="VPR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://iialfad-jh.github.io/images/hops/inreoduction.png">
+
+
+<link rel="canonical" href="https://iialfad-jh.github.io/2026/01/29/HOPS/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://iialfad-jh.github.io/2026/01/29/HOPS/","path":"2026/01/29/HOPS/","title":"顶会论文阅读[3/] | ICCV 2025 | HOPS"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>顶会论文阅读[3/] | ICCV 2025 | HOPS | IIALFAD</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="IIALFAD" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">IIALFAD</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个 RUNOOB 博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E3%80%90%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB%E3%80%91HOPS%EF%BC%9A%E4%B8%80%E7%A7%8D%E8%B6%85%E7%BB%B4%E5%8D%95%E7%82%B9%E7%AC%A6%E5%8F%B7%E6%9D%A5%E8%A1%A8%E7%A4%BA%E6%89%80%E6%9C%89%E5%9C%B0%E7%82%B9"><span class="nav-text">【论文解读】HOPS：一种超维单点符号来表示所有地点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="nav-text">1. 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%9B%AE%E6%A0%87"><span class="nav-text">2. 目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84%E4%B8%8E%E6%96%B9%E6%B3%95%E8%AE%BA"><span class="nav-text">3. 模型架构与方法论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E8%A7%86%E8%A7%89%E5%9C%B0%E7%82%B9%E8%AF%86%E5%88%AB%E7%9A%84%E5%BD%A2%E5%BC%8F%E5%8C%96"><span class="nav-text">3.1 视觉地点识别的形式化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E7%BB%91%E5%AE%9A%EF%BC%88Bundling%EF%BC%89"><span class="nav-text">3.2 参考数据集的绑定（Bundling）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E9%AB%98%E6%96%AF%E9%9A%8F%E6%9C%BA%E6%8A%95%E5%BD%B1%EF%BC%88Gaussian-Random-Projection%EF%BC%89"><span class="nav-text">3.3 高斯随机投影（Gaussian Random Projection）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82"><span class="nav-text">4.实现细节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="nav-text">5. 实验结果</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZJH"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">ZJH</p>
+  <div class="site-description" itemprop="description">学习笔记</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:jiahhhao@outlook.com" title="E-Mail → mailto:jiahhhao@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://iialfad-jh.github.io/2026/01/29/HOPS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="ZJH">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IIALFAD">
+      <meta itemprop="description" content="学习笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="顶会论文阅读[3&#x2F;] | ICCV 2025 | HOPS | IIALFAD">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          顶会论文阅读[3/] | ICCV 2025 | HOPS
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-01-29 15:35:55 / 修改时间：16:36:16" itemprop="dateCreated datePublished" datetime="2026-01-29T15:35:55+08:00">2026-01-29</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="【论文解读】HOPS：一种超维单点符号来表示所有地点"><a href="#【论文解读】HOPS：一种超维单点符号来表示所有地点" class="headerlink" title="【论文解读】HOPS：一种超维单点符号来表示所有地点"></a>【论文解读】HOPS：一种超维单点符号来表示所有地点</h1><blockquote>
+<p><strong>论文题目：</strong> A Hyperdimensional One Place Signature to Represent Them All: Stackable Descriptors For Visual Place Recognition</p>
+</blockquote>
+<blockquote>
+<p><strong>核心任务：</strong> 视觉地点识别（Visual Place Recognition, VPR）在剧烈环境变化下的鲁棒性提升</p>
+</blockquote>
+<p><strong>本文介绍的 HOPS (Hyperdimensional One Place Signatures) 方法，通过一种超维计算（Hyperdimensional Computing, HDC）框架，旨在解决传统多参考系VPR方法中计算成本与存储需求随参考地图数量线性增长的问题，同时显著提升地点识别的召回率。</strong></p>
+<img src="/images/hops/inreoduction.png" alt="using hyperdimensional computing to fuse descriptors from multiple reference sets with no dimensionality increase." style="width: 80%; display: block; margin: 0 auto;" />
+<span id="more"></span>
+
+<hr>
+<h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h2><p>视觉地点识别（VPR）是机器人自主导航和自动驾驶中的关键技术，其目标是根据当前的查询图像（Query）在地理标记的参考数据库（Reference Database）中检索出最匹配的图像以确定位置。然而，现实环境中的光照变化（如昼夜更替）、天气条件（如雨雪）以及季节变迁会导致同一地点的视觉外观发生剧烈改变，使得仅基于单一条件（通常是理想的晴天）建立的参考数据库难以应对复杂场景的匹配任务。</p>
+<p>为了应对这一挑战，现有的研究主要集中在两个方向：一是开发对环境变化更具鲁棒性的深度学习特征提取器；二是利用多参考系（Multi-Reference Sets），即存储同一地点的多张不同条件的图像。尽管多参考系方法能显著提升识别性能，但其计算复杂度和内存消耗通常随着参考系数量的增加而线性增长，这对于资源受限的实时机器人系统是不可接受的。本文提出的 HOPS 方法，利用超维计算空间的正交特性，将多个参考描述符“堆叠”为一个统一的描述符，在不增加推理阶段计算量的前提下，实现了对多环境信息的有效融合。</p>
+<h2 id="2-目标"><a href="#2-目标" class="headerlink" title="2. 目标"></a>2. 目标</h2><p>构建一种能够融合多环境信息的统一地点签名，具体包括：</p>
+<ol>
+<li><strong>提升鲁棒性</strong>：通过融合不同环境条件（如白天、夜晚、雨天）下的特征，增强描述符对外观变化的适应能力。</li>
+<li><strong>保持计算效率</strong>：确保融合后的描述符在匹配时的计算复杂度和存储需求保持为 $O(M)$（M为地点数量），即与单参考系方法持平，而不随融合的参考集数量增加。</li>
+<li><strong>模型无关性</strong>：提供一种通用的后处理框架，可直接应用于现有的 SOTA 特征提取器（如 SALAD, CricaVPR 等），无需重新训练网络。</li>
+</ol>
+<h2 id="3-模型架构与方法论"><a href="#3-模型架构与方法论" class="headerlink" title="3. 模型架构与方法论"></a>3. 模型架构与方法论</h2><p>HOPS 的核心思想源于超维计算（HDC），特别是利用高维空间中随机向量的准正交性（Quasi-orthogonality）。</p>
+<h3 id="3-1-视觉地点识别的形式化"><a href="#3-1-视觉地点识别的形式化" class="headerlink" title="3.1 视觉地点识别的形式化"></a>3.1 视觉地点识别的形式化</h3><p>传统的 VPR 被表述为图像检索问题。给定查询图像特征向量 $q$ 和参考数据库 $R &#x3D; {r_1, …, r_M}$，目标是找到使余弦距离 $d(q, r_i)$ 最小的参考向量 $r_{match}$。</p>
+<h3 id="3-2-参考数据集的绑定（Bundling）"><a href="#3-2-参考数据集的绑定（Bundling）" class="headerlink" title="3.2 参考数据集的绑定（Bundling）"></a>3.2 参考数据集的绑定（Bundling）</h3><p>HOPS 将同一地点 $i$ 在 $K$ 种不同条件下提取的特征向量 $r_i^k$ 进行融合。假设高维特征向量由“地点固有的几何结构信息”（信号）和“环境条件带来的干扰”（噪声）组成。在高维空间中，不同环境引入的随机噪声倾向于相互正交。</p>
+<p>融合过程采用<strong>逐元素相加</strong>操作，随后进行 <strong>L2 归一化</strong>。公式如下：</p>
+<p>$$r_{fused, i} &#x3D; \text{L2_Normalize}\left(\sum_{k&#x3D;1}^{K} r_i^k\right)$$</p>
+<p>通过这种叠加操作，与地点相关的共性特征（信号）在叠加中得到增强，而与特定环境相关的非结构化特征（噪声）则在平均化过程中被相对抑制。由于融合后的 $r_{fused, i}$ 仍保持与原始特征相同的维度，因此检索时的计算成本不会增加。</p>
+<h3 id="3-3-高斯随机投影（Gaussian-Random-Projection）"><a href="#3-3-高斯随机投影（Gaussian-Random-Projection）" class="headerlink" title="3.3 高斯随机投影（Gaussian Random Projection）"></a>3.3 高斯随机投影（Gaussian Random Projection）</h3><p>为了进一步验证 HOPS 特征的鲁棒性并探索压缩潜力，论文引入了高斯随机投影。根据 Johnson-Lindenstrauss 引理，高维空间中的点投影到低维空间后，其相对距离可以近似保持不变。通过生成一个服从高斯分布的随机矩阵 $G$，将高维融合特征 $r_{fused}$ 投影到低维空间 $\hat{r}_{fused}$：</p>
+<p>$$\hat{r}_{fused} &#x3D; G \times r_{fused}$$</p>
+<p>这一机制不仅用于降维实验，也证明了 HOPS 融合特征在极低维度下仍保留了关键的判别信息。</p>
+<h2 id="4-实现细节"><a href="#4-实现细节" class="headerlink" title="4.实现细节"></a>4.实现细节</h2><p>作为一种具有高度通用性的即插即用框架，HOPS 并不依赖于特定的网络架构，而是广泛兼容各类最先进的（SOTA）特征提取器。论文在实验中详细评估了多种代表性模型，包括基于 CNN 架构并利用特征混合机制的 MixVPR，以及基于 Vision Transformer 架构的 DinoV2 SALAD（利用最优传输理论聚合特征）和 CricaVPR（关注跨图像相关性）。这些模型输出的特征向量维度跨度显著，从轻量级的 512D 到高维的 10752D，充分验证了 HOPS 在不同特征空间密度下的有效性。</p>
+<p>在参考数据的构建上，除了直接融合真实采集的多季节与多天气数据集外，论文还创新性地引入了合成增强融合策略，以应对仅有单一参考图像的场景。该策略通过算法对原始图像施加特定的合成变换——包括模拟低照度环境的 Synthetic Dark、模拟传感器信号干扰的 Poisson Noise 以及模拟分辨率下降的下采样-上采样操作——从而生成人工的多参考集。这种方法通过数学上的特征叠加，使得系统在无需额外采集真实多环境数据的前提下，依然能够通过融合合成的特征变体来显著增强描述符的鲁棒性。</p>
+<p><strong>HOPS 方法本身不需要任何训练</strong>。它直接利用预训练好的 VPR 模型提取特征，并在推理之前对参考数据库进行数学上的聚合处理。所有的神经网络权重均来自其原始论文提供的预训练模型，这极大地降低了部署成本和技术门槛。</p>
+<h2 id="5-实验结果"><a href="#5-实验结果" class="headerlink" title="5. 实验结果"></a>5. 实验结果</h2><p>论文在三个具有挑战性的数据集上进行了广泛评估：Oxford RobotCar（城市道路，包含昼夜和天气变化）、Nordland（铁路，包含显著的季节变化）和 SFU Mountain（非结构化野外环境）。</p>
+<ol>
+<li><p><strong>与单参考系基线对比</strong>：<br>实验结果表明，HOPS 融合描述符在绝大多数测试场景下显著优于最佳的单一参考系结果。例如，在 Oxford RobotCar 数据集上，针对极具挑战的“overcast”查询，HOPS 能够将 Recall@1 从单参考系的较低水平提升至 95% 以上。</p>
+<img src="/images/hops/3.png" alt="Recall@1 on RobotCar datasets:" style="width: 100%; display: block; margin: 0 auto;" />
+
+<p><em>RobotCar 数据集上的 Recall@1：该表分为单参考和多参考方法。最佳单参考结果加下划线，最佳多参考结果加粗。该表中的比较应垂直向下的列进行。重要的是，我们的 HOPS 融合描述符几乎一致优于最佳单参考结果（在 28&#x2F;30 的情况下），并且在大多数情况下优于替代的多参考方法（在 22&#x2F;30 的情况下）。</em></p>
+<img src="/images/hops/4.png" alt="provides insights into how the HOPS fused descriptors are improving VPR performance" style="width: 50%; display: block; margin: 0 auto;" />
+
+<p><em>上图：使用 SALAD 描述符在 Oxford RobotCar 组上进行顶部 VPR 匹配的匹配误差密度图（以帧为单位测量误差，RobotCar 的误差约为 1m&#x2F;帧）。对于已经高性能的 VPR 描述符，我们的 HOPS 融合描述符能够进一步减少已经非常接近真实匹配的匹配错误，消除空间上接近位置的歧义。底部：对于性能较低的基线，例如 NetVLAD，我们的 HOPS 融合描述符也纠正了大量的大错误。</em></p>
+</li>
+<li><p><strong>与多参考系基线对比</strong>：<br>相较于“参考系池化（Pooling）”和“距离矩阵平均（Distance Matrix Averaging）”等传统多参考系方法，HOPS 不仅取得了相当甚至更高的精度，更关键的是避免了计算复杂度的线性增长。HOPS 证明了简单的向量叠加在高维空间具有强大的去噪和特征增强能力。</p>
+<p><em>同上图</em></p>
+</li>
+<li><p><strong>维度缩减鲁棒性</strong>：<br>利用高斯随机投影进行的实验显示，HOPS 融合特征具有极高的鲁棒性。即便是将维度压缩至原始维度的 5% 左右（如从 10752D 降至 512D），其性能依然优于未压缩的单一参考系特征。这意味着 HOPS 能够在大幅节省存储空间的同时维持高精度。</p>
+<img src="/images/hops/7.png" alt="provides insights into how the HOPS fused descriptors are improving VPR performance" style="width: 50%; display: block; margin: 0 auto;" />
+
+<p><em>使用高斯随机投影降低维度时，Oxford RobotCar Dusk 集中不同 VPR 描述符的 Recall@1 性能。我们的 HOPS 融合描述符能够保持最高的 R@1，允许替代用途，其中描述符维度可以减少高达 97%，同时超过全尺寸的最佳单参考性能。</em></p>
+</li>
+<li><p><strong>合成数据增强效果</strong>：<br>实验证实，在缺乏真实多环境参考图的情况下，融合合成的增强图像（Synthetic Image Augmentations）也能带来性能提升，这进一步扩展了该方法的适用范围。</p>
+<img src="/images/hops/6.png" alt="Recall@1 on RobotCar datasets Using Synthetic Changes" style="width: 80%; display: block; margin: 0 auto;" />
+
+<p><em>使用综合更改对 RobotCar 数据集进行 Recall@1</em></p>
+</li>
+</ol>
+<p>总结</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/VPR/" rel="tag"># VPR</a>
+              <a href="/tags/Hyperdimensional-One-Place-Signatures-HDC/" rel="tag"># Hyperdimensional One Place Signatures(HDC)</a>
+              <a href="/tags/Gaussian-Random-Projection-GRP/" rel="tag"># Gaussian Random Projection(GRP)</a>
+              <a href="/tags/ICCV-2025/" rel="tag"># ICCV 2025</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/01/22/VPR-CLOAK/" rel="prev" title="顶会论文阅读[2&#x2F;] | ICCV 2025 | VPR-Cloak">
+                  <i class="fa fa-angle-left"></i> 顶会论文阅读[2/] | ICCV 2025 | VPR-Cloak
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZJH</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">8k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">31 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div> -->
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

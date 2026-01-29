@@ -1,6 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>顶会论文阅读[3/] | ICCV 2025 | HOPS</title>
+    <url>/2026/01/29/HOPS/</url>
+    <content><![CDATA[<h1 id="【论文解读】HOPS：一种超维单点符号来表示所有地点"><a href="#【论文解读】HOPS：一种超维单点符号来表示所有地点" class="headerlink" title="【论文解读】HOPS：一种超维单点符号来表示所有地点"></a>【论文解读】HOPS：一种超维单点符号来表示所有地点</h1><blockquote>
+<p><strong>论文题目：</strong> A Hyperdimensional One Place Signature to Represent Them All: Stackable Descriptors For Visual Place Recognition</p>
+</blockquote>
+<blockquote>
+<p><strong>核心任务：</strong> 视觉地点识别（Visual Place Recognition, VPR）在剧烈环境变化下的鲁棒性提升</p>
+</blockquote>
+<p><strong>本文介绍的 HOPS (Hyperdimensional One Place Signatures) 方法，通过一种超维计算（Hyperdimensional Computing, HDC）框架，旨在解决传统多参考系VPR方法中计算成本与存储需求随参考地图数量线性增长的问题，同时显著提升地点识别的召回率。</strong></p>
+<img src="/images/hops/inreoduction.png" alt="using hyperdimensional computing to fuse descriptors from multiple reference sets with no dimensionality increase." style="width: 80%; display: block; margin: 0 auto;" />
+<span id="more"></span>
+
+<hr>
+<h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h2><p>视觉地点识别（VPR）是机器人自主导航和自动驾驶中的关键技术，其目标是根据当前的查询图像（Query）在地理标记的参考数据库（Reference Database）中检索出最匹配的图像以确定位置。然而，现实环境中的光照变化（如昼夜更替）、天气条件（如雨雪）以及季节变迁会导致同一地点的视觉外观发生剧烈改变，使得仅基于单一条件（通常是理想的晴天）建立的参考数据库难以应对复杂场景的匹配任务。</p>
+<p>为了应对这一挑战，现有的研究主要集中在两个方向：一是开发对环境变化更具鲁棒性的深度学习特征提取器；二是利用多参考系（Multi-Reference Sets），即存储同一地点的多张不同条件的图像。尽管多参考系方法能显著提升识别性能，但其计算复杂度和内存消耗通常随着参考系数量的增加而线性增长，这对于资源受限的实时机器人系统是不可接受的。本文提出的 HOPS 方法，利用超维计算空间的正交特性，将多个参考描述符“堆叠”为一个统一的描述符，在不增加推理阶段计算量的前提下，实现了对多环境信息的有效融合。</p>
+<h2 id="2-目标"><a href="#2-目标" class="headerlink" title="2. 目标"></a>2. 目标</h2><p>构建一种能够融合多环境信息的统一地点签名，具体包括：</p>
+<ol>
+<li><strong>提升鲁棒性</strong>：通过融合不同环境条件（如白天、夜晚、雨天）下的特征，增强描述符对外观变化的适应能力。</li>
+<li><strong>保持计算效率</strong>：确保融合后的描述符在匹配时的计算复杂度和存储需求保持为 $O(M)$（M为地点数量），即与单参考系方法持平，而不随融合的参考集数量增加。</li>
+<li><strong>模型无关性</strong>：提供一种通用的后处理框架，可直接应用于现有的 SOTA 特征提取器（如 SALAD, CricaVPR 等），无需重新训练网络。</li>
+</ol>
+<h2 id="3-模型架构与方法论"><a href="#3-模型架构与方法论" class="headerlink" title="3. 模型架构与方法论"></a>3. 模型架构与方法论</h2><p>HOPS 的核心思想源于超维计算（HDC），特别是利用高维空间中随机向量的准正交性（Quasi-orthogonality）。</p>
+<h3 id="3-1-视觉地点识别的形式化"><a href="#3-1-视觉地点识别的形式化" class="headerlink" title="3.1 视觉地点识别的形式化"></a>3.1 视觉地点识别的形式化</h3><p>传统的 VPR 被表述为图像检索问题。给定查询图像特征向量 $q$ 和参考数据库 $R &#x3D; {r_1, …, r_M}$，目标是找到使余弦距离 $d(q, r_i)$ 最小的参考向量 $r_{match}$。</p>
+<h3 id="3-2-参考数据集的绑定（Bundling）"><a href="#3-2-参考数据集的绑定（Bundling）" class="headerlink" title="3.2 参考数据集的绑定（Bundling）"></a>3.2 参考数据集的绑定（Bundling）</h3><p>HOPS 将同一地点 $i$ 在 $K$ 种不同条件下提取的特征向量 $r_i^k$ 进行融合。假设高维特征向量由“地点固有的几何结构信息”（信号）和“环境条件带来的干扰”（噪声）组成。在高维空间中，不同环境引入的随机噪声倾向于相互正交。</p>
+<p>融合过程采用<strong>逐元素相加</strong>操作，随后进行 <strong>L2 归一化</strong>。公式如下：</p>
+<p>$$r_{fused, i} &#x3D; \text{L2_Normalize}\left(\sum_{k&#x3D;1}^{K} r_i^k\right)$$</p>
+<p>通过这种叠加操作，与地点相关的共性特征（信号）在叠加中得到增强，而与特定环境相关的非结构化特征（噪声）则在平均化过程中被相对抑制。由于融合后的 $r_{fused, i}$ 仍保持与原始特征相同的维度，因此检索时的计算成本不会增加。</p>
+<h3 id="3-3-高斯随机投影（Gaussian-Random-Projection）"><a href="#3-3-高斯随机投影（Gaussian-Random-Projection）" class="headerlink" title="3.3 高斯随机投影（Gaussian Random Projection）"></a>3.3 高斯随机投影（Gaussian Random Projection）</h3><p>为了进一步验证 HOPS 特征的鲁棒性并探索压缩潜力，论文引入了高斯随机投影。根据 Johnson-Lindenstrauss 引理，高维空间中的点投影到低维空间后，其相对距离可以近似保持不变。通过生成一个服从高斯分布的随机矩阵 $G$，将高维融合特征 $r_{fused}$ 投影到低维空间 $\hat{r}_{fused}$：</p>
+<p>$$\hat{r}_{fused} &#x3D; G \times r_{fused}$$</p>
+<p>这一机制不仅用于降维实验，也证明了 HOPS 融合特征在极低维度下仍保留了关键的判别信息。</p>
+<h2 id="4-实现细节"><a href="#4-实现细节" class="headerlink" title="4.实现细节"></a>4.实现细节</h2><p>作为一种具有高度通用性的即插即用框架，HOPS 并不依赖于特定的网络架构，而是广泛兼容各类最先进的（SOTA）特征提取器。论文在实验中详细评估了多种代表性模型，包括基于 CNN 架构并利用特征混合机制的 MixVPR，以及基于 Vision Transformer 架构的 DinoV2 SALAD（利用最优传输理论聚合特征）和 CricaVPR（关注跨图像相关性）。这些模型输出的特征向量维度跨度显著，从轻量级的 512D 到高维的 10752D，充分验证了 HOPS 在不同特征空间密度下的有效性。</p>
+<p>在参考数据的构建上，除了直接融合真实采集的多季节与多天气数据集外，论文还创新性地引入了合成增强融合策略，以应对仅有单一参考图像的场景。该策略通过算法对原始图像施加特定的合成变换——包括模拟低照度环境的 Synthetic Dark、模拟传感器信号干扰的 Poisson Noise 以及模拟分辨率下降的下采样-上采样操作——从而生成人工的多参考集。这种方法通过数学上的特征叠加，使得系统在无需额外采集真实多环境数据的前提下，依然能够通过融合合成的特征变体来显著增强描述符的鲁棒性。</p>
+<p><strong>HOPS 方法本身不需要任何训练</strong>。它直接利用预训练好的 VPR 模型提取特征，并在推理之前对参考数据库进行数学上的聚合处理。所有的神经网络权重均来自其原始论文提供的预训练模型，这极大地降低了部署成本和技术门槛。</p>
+<h2 id="5-实验结果"><a href="#5-实验结果" class="headerlink" title="5. 实验结果"></a>5. 实验结果</h2><p>论文在三个具有挑战性的数据集上进行了广泛评估：Oxford RobotCar（城市道路，包含昼夜和天气变化）、Nordland（铁路，包含显著的季节变化）和 SFU Mountain（非结构化野外环境）。</p>
+<ol>
+<li><p><strong>与单参考系基线对比</strong>：<br>实验结果表明，HOPS 融合描述符在绝大多数测试场景下显著优于最佳的单一参考系结果。例如，在 Oxford RobotCar 数据集上，针对极具挑战的“overcast”查询，HOPS 能够将 Recall@1 从单参考系的较低水平提升至 95% 以上。</p>
+<img src="/images/hops/3.png" alt="Recall@1 on RobotCar datasets:" style="width: 100%; display: block; margin: 0 auto;" />
+
+<p><em>RobotCar 数据集上的 Recall@1：该表分为单参考和多参考方法。最佳单参考结果加下划线，最佳多参考结果加粗。该表中的比较应垂直向下的列进行。重要的是，我们的 HOPS 融合描述符几乎一致优于最佳单参考结果（在 28&#x2F;30 的情况下），并且在大多数情况下优于替代的多参考方法（在 22&#x2F;30 的情况下）。</em></p>
+<img src="/images/hops/4.png" alt="provides insights into how the HOPS fused descriptors are improving VPR performance" style="width: 50%; display: block; margin: 0 auto;" />
+
+<p><em>上图：使用 SALAD 描述符在 Oxford RobotCar 组上进行顶部 VPR 匹配的匹配误差密度图（以帧为单位测量误差，RobotCar 的误差约为 1m&#x2F;帧）。对于已经高性能的 VPR 描述符，我们的 HOPS 融合描述符能够进一步减少已经非常接近真实匹配的匹配错误，消除空间上接近位置的歧义。底部：对于性能较低的基线，例如 NetVLAD，我们的 HOPS 融合描述符也纠正了大量的大错误。</em></p>
+</li>
+<li><p><strong>与多参考系基线对比</strong>：<br>相较于“参考系池化（Pooling）”和“距离矩阵平均（Distance Matrix Averaging）”等传统多参考系方法，HOPS 不仅取得了相当甚至更高的精度，更关键的是避免了计算复杂度的线性增长。HOPS 证明了简单的向量叠加在高维空间具有强大的去噪和特征增强能力。</p>
+<p><em>同上图</em></p>
+</li>
+<li><p><strong>维度缩减鲁棒性</strong>：<br>利用高斯随机投影进行的实验显示，HOPS 融合特征具有极高的鲁棒性。即便是将维度压缩至原始维度的 5% 左右（如从 10752D 降至 512D），其性能依然优于未压缩的单一参考系特征。这意味着 HOPS 能够在大幅节省存储空间的同时维持高精度。</p>
+<img src="/images/hops/7.png" alt="provides insights into how the HOPS fused descriptors are improving VPR performance" style="width: 50%; display: block; margin: 0 auto;" />
+
+<p><em>使用高斯随机投影降低维度时，Oxford RobotCar Dusk 集中不同 VPR 描述符的 Recall@1 性能。我们的 HOPS 融合描述符能够保持最高的 R@1，允许替代用途，其中描述符维度可以减少高达 97%，同时超过全尺寸的最佳单参考性能。</em></p>
+</li>
+<li><p><strong>合成数据增强效果</strong>：<br>实验证实，在缺乏真实多环境参考图的情况下，融合合成的增强图像（Synthetic Image Augmentations）也能带来性能提升，这进一步扩展了该方法的适用范围。</p>
+<img src="/images/hops/6.png" alt="Recall@1 on RobotCar datasets Using Synthetic Changes" style="width: 80%; display: block; margin: 0 auto;" />
+
+<p><em>使用综合更改对 RobotCar 数据集进行 Recall@1</em></p>
+</li>
+</ol>
+<p>总结</p>
+]]></content>
+      <tags>
+        <tag>VPR</tag>
+        <tag>Hyperdimensional One Place Signatures(HDC)</tag>
+        <tag>Gaussian Random Projection(GRP)</tag>
+        <tag>ICCV 2025</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>顶会论文阅读[1/] | ICCV 2025 | GenPriv</title>
     <url>/2026/01/22/Less-Static-More-Private/</url>
     <content><![CDATA[<h1 id="【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别"><a href="#【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别" class="headerlink" title="【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别"></a>【论文解读】GenPriv：基于生成式解耦学习的可迁移隐私保护动作识别</h1><blockquote>
@@ -135,11 +202,71 @@
 <p><strong>总结</strong>：提出了一种名为 <strong>GenPriv</strong> 的生成式解耦学习框架，通过将视频特征解耦为 <strong>静态（含隐私）</strong> 和 <strong>动态（含动作）</strong> 两部分，在利用量化机制移除静态隐私信息的同时，通过时序对齐技术解决了现有隐私保护模型在 <strong>跨域（如光照、视角变化）</strong> 场景下失效的问题，实现了既能保护隐私又能精准识别动作的目标。</p>
 ]]></content>
       <tags>
+        <tag>ICCV 2025</tag>
         <tag>Private</tag>
         <tag>PPAR</tag>
         <tag>Domain Adaptation</tag>
         <tag>论文笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>顶会论文阅读[2/] | ICCV 2025 | VPR-Cloak</title>
+    <url>/2026/01/22/VPR-CLOAK/</url>
+    <content><![CDATA[<h1 id="【论文解读】VPR-Cloak-针对视觉地点识别隐私保护的首次探索"><a href="#【论文解读】VPR-Cloak-针对视觉地点识别隐私保护的首次探索" class="headerlink" title="【论文解读】VPR-Cloak: 针对视觉地点识别隐私保护的首次探索"></a>【论文解读】VPR-Cloak: 针对视觉地点识别隐私保护的首次探索</h1><blockquote>
+<p><strong>论文题目</strong>：VPR-Cloak: A First Look at Privacy Cloak Against Visual Place Recognition<br><strong>核心任务</strong>：针对视觉地点识别（VPR）系统的图像隐私保护，防止未经授权的位置信息泄露。</p>
+</blockquote>
+<p>本文介绍的 <strong>VPR-Cloak</strong> 方法，通过一种<strong>显著性感知先验引导的扰动优化（Saliency-Aware Prior Guided Perturbation Optimization, SAP-PO）</strong> 框架，旨在解决视觉地点识别场景下，现有隐私保护方法在黑盒攻击鲁棒性、视觉不可察觉性以及实时处理性能方面难以兼顾的问题。</p>
+<img src="/images/vpr-cloak/introduction.png" alt="introduction" style="width: 50%; display: block; margin: 0 auto;" />
+
+<span id="more"></span>
+
+<h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h2><p>随着视觉地点识别（Visual Place Recognition, VPR）技术的飞速发展，其在增强定位和导航能力的同时，也带来了严峻的隐私挑战。在社交媒体广泛普及的今天，未经授权的第三方可以利用强大的 VPR 系统，通过用户发布的照片与后台数据库进行比对，从而精确推断出用户的行踪轨迹。这种能力的泛化不仅暴露了地理位置隐私，更可能进一步泄露用户的身份和居住信息。</p>
+<p>尽管对抗性扰动（Adversarial Perturbations）在图像分类等领域的隐私保护中已有研究，但现有的解决方案难以同时满足 VPR 场景下的特定需求：既要对抗黑盒模型，又要保证人眼不可察觉，同时还需要满足实时处理的效率要求。针对这一空白，本文提出了 <strong>VPR-Cloak</strong>，这是一种高效的隐私保护框架，旨在为图像添加“隐形”保护层，使其能够欺骗 VPR 系统，防止位置信息泄露。</p>
+<h2 id="2-目标"><a href="#2-目标" class="headerlink" title="2. 目标"></a>2. 目标</h2><p>VPR-Cloak 的设计主要为了解决现实世界中针对 VPR 隐私保护的三个核心挑战：</p>
+<ol>
+<li><strong>黑盒鲁棒性（Black-box Robustness）</strong>：现实中的恶意 VPR 模型通常是未知的（黑盒）。保护机制必须在不知道目标模型架构和参数的情况下，有效降低其识别成功率。</li>
+<li><strong>不可察觉性（Imperceptibility）</strong>：生成的扰动必须保持极高的视觉质量。图像在经过处理后，对于人类观察者而言应当看似未被修改，不影响正常的社交分享。</li>
+<li><strong>实时性能（Real-time Performance）</strong>：为了支持实际应用（如移动端实时上传保护），算法的推理和处理速度必须足够快，优于现有的资源密集型方法。</li>
+</ol>
+<h2 id="3-模型架构"><a href="#3-模型架构" class="headerlink" title="3. 模型架构"></a>3. 模型架构</h2><p>VPR-Cloak 的核心架构由两个主要部分组成：<strong>显著性感知先验生成（Saliency-Aware Prior Generation）</strong> 和 <strong>显著性感知先验引导扰动优化（SAP-PO）</strong>。</p>
+<p><img src="/images/vpr-cloak/overview.png" alt="Figure 2: Overview of VPR-Cloak"></p>
+<p><em>VPR-Cloak 整体架构概览。利用微调的 ViT 提取显著性先验，并通过 SAP-PO 算法在空间域或频域生成对抗扰动。</em></p>
+<h3 id="3-1-显著性感知先验生成"><a href="#3-1-显著性感知先验生成" class="headerlink" title="3.1 显著性感知先验生成"></a>3.1 显著性感知先验生成</h3><p>为了避免在天空、地面等非关键区域引入无效噪声从而降低视觉质量，模型首先构建了一个显著性感知机制。该机制利用经过微调的 Vision Transformer（Fine-tuned ViT，基于 DINOv2 主干并采用适配器微调），对输入图像进行分析。ViT 输出一个显著性感知先验图 $P$，该图精准地标识了 VPR 系统在进行地点识别时所依赖的决定性区域（如建筑纹理、地标特征）。</p>
+<h3 id="3-2-SAP-PO-算法框架"><a href="#3-2-SAP-PO-算法框架" class="headerlink" title="3.2 SAP-PO 算法框架"></a>3.2 SAP-PO 算法框架</h3><p>SAP-PO（Saliency-Aware Prior Guided Perturbation Optimization）是整个框架的核心优化算法。它利用代理 VPR 模型（Surrogate VPR）提供的梯度反馈，迭代地生成最优扰动。为了平衡攻击效果与视觉隐蔽性，SAP-PO 提供了两种优化策略：</p>
+<ul>
+<li><strong>空间域优化</strong>：直接利用显著性先验图 $P$ 作为空间权重，将扰动集中在对识别至关重要的区域，同时抑制非相关区域的噪声。</li>
+<li><strong>频域优化</strong>：利用人类视觉系统对低频信息敏感而深度学习模型依赖高频纹理的特性，通过离散余弦变换（DCT）将扰动转换至频域。算法将扰动分解为 $8 \times 8$ 的图块，分离并去除左上角的低频分量（RemoveLowFreq），仅对右下角的高频分量进行精细化修改，最后通过逆离散余弦变换（IDCT）还原。这种方法在保证攻击有效性的同时，极大提升了人眼的不可察觉性。</li>
+</ul>
+<h2 id="4-实现细节"><a href="#4-实现细节" class="headerlink" title="4. 实现细节"></a>4. 实现细节</h2><p>SAP-PO 的具体执行是一个迭代优化的过程，旨在生成最终的对抗扰动 $\delta$。</p>
+<p>在每一次迭代中，算法首先计算当前的受扰动图像 $I’$。如果是频域模式，算法会先对噪声 $\delta$ 应用高通滤波操作，强制去除低频成分，确保噪声主要存在于高频部分。随后，图像被输入到代理 VPR 模型中，计算损失函数。该损失函数旨在最大化图像特征与真实地点特征之间的距离（Adversarial Loss），同时约束图像质量（Visual Loss）。</p>
+<p>通过反向传播获取梯度后，算法更新噪声 $\delta$。为了防止噪声过大导致视觉伪影，更新后的噪声必须经过一个基于显著性先验的裁剪函数（Clipping Function）：</p>
+<p>$$ \delta &#x3D; \mathcal{C}(\delta, -P \cdot \epsilon, P \cdot \epsilon) $$</p>
+<p>其中 $\epsilon$ 代表最大扰动预算。该公式利用显著性图 $P$ 动态调整每个像素点的扰动上限：在显著区域（$P \approx 1$），允许较大的扰动以增强攻击力；在非显著区域（$P \approx 0$），强制扰动趋近于零。值得注意的是，在频域模式下，由于去除了低频分量，噪声已具备隐身特性，因此此时会将 $P$ 放宽为 1，允许全图范围的高频扰动优化。</p>
+<h2 id="5-加噪细节"><a href="#5-加噪细节" class="headerlink" title="5. 加噪细节"></a>5. 加噪细节</h2><p>为了确保生成的对抗样本具有良好的迁移性（Transferability），即能够攻击未知的黑盒模型，VPR-Cloak 在优化过程中采用了<strong>随机选择策略</strong>。</p>
+<p>系统维护一个包含多种不同架构 VPR 模型的模型池（Model Pool, e.g., NetVLAD, GeM 等）。在 SAP-PO 的 $K$ 次迭代循环中（通常 $K&#x3D;10$），算法并非固定使用某一个代理模型，而是随机从模型池中选择不同的模型作为当前的 Surrogate VPR 来计算梯度。这种“轮流陪练”的机制防止了扰动对单一模型结构的过拟合，显著增强了生成的对抗样本在面对未知黑盒模型（如 Google 或 Bing 的专有模型）时的通用攻击能力。</p>
+<h2 id="6-实验结果"><a href="#6-实验结果" class="headerlink" title="6. 实验结果"></a>6. 实验结果</h2><p>作者在多个具有挑战性的基准数据集上进行了广泛的评估，包括 PITTS30K（标准城市场景）、TOKYO247（光照变化）、MSLS（跨时间&#x2F;长周期）以及 NORDLAND（剧烈季节变化）。</p>
+<h3 id="6-1-黑盒攻击性能对比"><a href="#6-1-黑盒攻击性能对比" class="headerlink" title="6.1 黑盒攻击性能对比"></a>6.1 黑盒攻击性能对比</h3><p>实验对比了 VPR-Cloak 与当前的 SOTA 方法（如 ANDA 和 MultiANDA）。在黑盒设置下（即使用 Crica 模型作为代理生成的扰动去攻击 DHE 等其他模型），实验结果（Table 1）显示，VPR-Cloak 在 $\Delta R@1$（召回率下降幅度）等指标上全面超越基线方法。这表明该方法具有极强的迁移性，能够有效防御未知的 VPR 系统。</p>
+<p><img src="/images/vpr-cloak/result1.png" alt="total experiments"></p>
+<p><em>实验指标，保护成功率 (%) 比较 (Epsilon&#x3D;12&#x2F;255)。 ΔR@1、ΔR@5和ΔR@10衡量的是应用保护后模型检索精度的下降情况，值越大表明保护越强</em></p>
+<h3 id="6-2-图像质量评估"><a href="#6-2-图像质量评估" class="headerlink" title="6.2 图像质量评估"></a>6.2 图像质量评估</h3><p>在视觉质量方面，得益于频域优化策略，VPR-Cloak 生成的图像在 LPIPS（感知误差，越低越好）和 PSNR（峰值信噪比，越高越好）指标上均优于对比方法。定性结果表明，保护后的图像在人眼看来与原图几乎无异，没有明显的噪点或伪影。</p>
+<img src="/images/vpr-cloak/result3.png" alt="Image quality comparison" style="width: 50%; display: block; margin: 0 auto;" />
+
+<p><em>图像质量比较（Epsilon&#x3D;12&#x2F;255）。较高的 PSNR&#x2F;SSIM 和较低的 LPIPS 表示更好的视觉保真度，而较低的 Avg Epsilon 表示更难以察觉的扰动。</em></p>
+<p><img src="/images/vpr-cloak/qualitative.png" alt="Qualitative results"></p>
+<p><em>定性结果。我们的方法可以有效防止位置检索，同时保持图像质量。绿色框表示保护成功，橙色框表示保护成功。</em></p>
+<h3 id="6-3-运行效率与实战验证"><a href="#6-3-运行效率与实战验证" class="headerlink" title="6.3 运行效率与实战验证"></a>6.3 运行效率与实战验证</h3><p>效率评估显示，VPR-Cloak 处理单张图像仅需 0.036 秒，相比 MultiANDA 的 0.551 秒实现了约 15 倍的加速，满足了实时应用的需求。此外，作者还通过 Google Image Search 和 Microsoft Bing Image Search 进行了实战验证（Figure 4）。结果表明，经过 VPR-Cloak 处理的图像成功误导了这些顶级的商业视觉搜索系统，使其返回错误的地点或不相关的物体，充分证明了该方法的实际应用价值。</p>
+<p><img src="/images/vpr-cloak/result2.png" alt="Figure 4: Real-world protection"></p>
+<p><em>商业 API 防护测试。经 VPR-Cloak 保护的图像成功导致 Google 和 Bing 无法检索到正确的地理位置信息。</em></p>
+<hr>
+<p><strong>总结</strong></p>
+<p>本文首创了针对视觉地点识别（VPR）的隐私保护框架 VPR-Cloak，通过结合显著性区域定位与频域高频噪声优化（SAP-PO），成功实现了兼具黑盒攻击鲁棒性、视觉隐蔽性与实时处理能力的图像位置隐私保护。</p>
+<p>显著性区域定位是让攻击<strong>指哪打哪</strong>只改AI关注的建筑纹理，不改天空背景），<strong>频域高频噪声优化</strong>是让攻击<strong>瞒天过海</strong>（把干扰藏在人眼看不见的高频细节里，不动低频轮廓），两者结合就是**精准且隐形的致命打。</p>
+]]></content>
+      <tags>
+        <tag>VPR</tag>
         <tag>ICCV 2025</tag>
+        <tag>Private</tag>
+        <tag>论文笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -235,79 +362,6 @@
 ]]></content>
       <tags>
         <tag>Algorithm</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>顶会论文阅读[2/] | ICCV 2025 | VPR-Cloak</title>
-    <url>/2026/01/22/VPR-CLOAK/</url>
-    <content><![CDATA[<hr>
-<h1 id="【论文解读】VPR-Cloak-针对视觉地点识别隐私保护的首次探索"><a href="#【论文解读】VPR-Cloak-针对视觉地点识别隐私保护的首次探索" class="headerlink" title="【论文解读】VPR-Cloak: 针对视觉地点识别隐私保护的首次探索"></a>【论文解读】VPR-Cloak: 针对视觉地点识别隐私保护的首次探索</h1><blockquote>
-<p><strong>论文题目</strong>：VPR-Cloak: A First Look at Privacy Cloak Against Visual Place Recognition<br><strong>核心任务</strong>：针对视觉地点识别（VPR）系统的图像隐私保护，防止未经授权的位置信息泄露。</p>
-</blockquote>
-<p>本文介绍的 <strong>VPR-Cloak</strong> 方法，通过一种<strong>显著性感知先验引导的扰动优化（Saliency-Aware Prior Guided Perturbation Optimization, SAP-PO）</strong> 框架，旨在解决视觉地点识别场景下，现有隐私保护方法在黑盒攻击鲁棒性、视觉不可察觉性以及实时处理性能方面难以兼顾的问题。</p>
-<img src="/images/vpr-cloak/introduction.png" alt="introduction" style="width: 50%; display: block; margin: 0 auto;" />
-
-<span id="more"></span>
-
-<h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h2><p>随着视觉地点识别（Visual Place Recognition, VPR）技术的飞速发展，其在增强定位和导航能力的同时，也带来了严峻的隐私挑战。在社交媒体广泛普及的今天，未经授权的第三方可以利用强大的 VPR 系统，通过用户发布的照片与后台数据库进行比对，从而精确推断出用户的行踪轨迹。这种能力的泛化不仅暴露了地理位置隐私，更可能进一步泄露用户的身份和居住信息。</p>
-<p>尽管对抗性扰动（Adversarial Perturbations）在图像分类等领域的隐私保护中已有研究，但现有的解决方案难以同时满足 VPR 场景下的特定需求：既要对抗黑盒模型，又要保证人眼不可察觉，同时还需要满足实时处理的效率要求。针对这一空白，本文提出了 <strong>VPR-Cloak</strong>，这是一种高效的隐私保护框架，旨在为图像添加“隐形”保护层，使其能够欺骗 VPR 系统，防止位置信息泄露。</p>
-<h2 id="2-目标"><a href="#2-目标" class="headerlink" title="2. 目标"></a>2. 目标</h2><p>VPR-Cloak 的设计主要为了解决现实世界中针对 VPR 隐私保护的三个核心挑战：</p>
-<ol>
-<li><strong>黑盒鲁棒性（Black-box Robustness）</strong>：现实中的恶意 VPR 模型通常是未知的（黑盒）。保护机制必须在不知道目标模型架构和参数的情况下，有效降低其识别成功率。</li>
-<li><strong>不可察觉性（Imperceptibility）</strong>：生成的扰动必须保持极高的视觉质量。图像在经过处理后，对于人类观察者而言应当看似未被修改，不影响正常的社交分享。</li>
-<li><strong>实时性能（Real-time Performance）</strong>：为了支持实际应用（如移动端实时上传保护），算法的推理和处理速度必须足够快，优于现有的资源密集型方法。</li>
-</ol>
-<h2 id="3-模型架构"><a href="#3-模型架构" class="headerlink" title="3. 模型架构"></a>3. 模型架构</h2><p>VPR-Cloak 的核心架构由两个主要部分组成：<strong>显著性感知先验生成（Saliency-Aware Prior Generation）</strong> 和 <strong>显著性感知先验引导扰动优化（SAP-PO）</strong>。</p>
-<p><img src="/images/vpr-cloak/overview.png" alt="Figure 2: Overview of VPR-Cloak"></p>
-<p><em>VPR-Cloak 整体架构概览。利用微调的 ViT 提取显著性先验，并通过 SAP-PO 算法在空间域或频域生成对抗扰动。</em></p>
-<h3 id="3-1-显著性感知先验生成"><a href="#3-1-显著性感知先验生成" class="headerlink" title="3.1 显著性感知先验生成"></a>3.1 显著性感知先验生成</h3><p>为了避免在天空、地面等非关键区域引入无效噪声从而降低视觉质量，模型首先构建了一个显著性感知机制。该机制利用经过微调的 Vision Transformer（Fine-tuned ViT，基于 DINOv2 主干并采用适配器微调），对输入图像进行分析。ViT 输出一个显著性感知先验图 $P$，该图精准地标识了 VPR 系统在进行地点识别时所依赖的决定性区域（如建筑纹理、地标特征）。</p>
-<h3 id="3-2-SAP-PO-算法框架"><a href="#3-2-SAP-PO-算法框架" class="headerlink" title="3.2 SAP-PO 算法框架"></a>3.2 SAP-PO 算法框架</h3><p>SAP-PO（Saliency-Aware Prior Guided Perturbation Optimization）是整个框架的核心优化算法。它利用代理 VPR 模型（Surrogate VPR）提供的梯度反馈，迭代地生成最优扰动。为了平衡攻击效果与视觉隐蔽性，SAP-PO 提供了两种优化策略：</p>
-<ul>
-<li><strong>空间域优化</strong>：直接利用显著性先验图 $P$ 作为空间权重，将扰动集中在对识别至关重要的区域，同时抑制非相关区域的噪声。</li>
-<li><strong>频域优化</strong>：利用人类视觉系统对低频信息敏感而深度学习模型依赖高频纹理的特性，通过离散余弦变换（DCT）将扰动转换至频域。算法将扰动分解为 $8 \times 8$ 的图块，分离并去除左上角的低频分量（RemoveLowFreq），仅对右下角的高频分量进行精细化修改，最后通过逆离散余弦变换（IDCT）还原。这种方法在保证攻击有效性的同时，极大提升了人眼的不可察觉性。</li>
-</ul>
-<h2 id="4-实现细节"><a href="#4-实现细节" class="headerlink" title="4. 实现细节"></a>4. 实现细节</h2><p>SAP-PO 的具体执行是一个迭代优化的过程，旨在生成最终的对抗扰动 $\delta$。</p>
-<p>在每一次迭代中，算法首先计算当前的受扰动图像 $I’$。如果是频域模式，算法会先对噪声 $\delta$ 应用高通滤波操作，强制去除低频成分，确保噪声主要存在于高频部分。随后，图像被输入到代理 VPR 模型中，计算损失函数。该损失函数旨在最大化图像特征与真实地点特征之间的距离（Adversarial Loss），同时约束图像质量（Visual Loss）。</p>
-<p>通过反向传播获取梯度后，算法更新噪声 $\delta$。为了防止噪声过大导致视觉伪影，更新后的噪声必须经过一个基于显著性先验的裁剪函数（Clipping Function）：</p>
-<p>$$ \delta &#x3D; \mathcal{C}(\delta, -P \cdot \epsilon, P \cdot \epsilon) $$</p>
-<p>其中 $\epsilon$ 代表最大扰动预算。该公式利用显著性图 $P$ 动态调整每个像素点的扰动上限：在显著区域（$P \approx 1$），允许较大的扰动以增强攻击力；在非显著区域（$P \approx 0$），强制扰动趋近于零。值得注意的是，在频域模式下，由于去除了低频分量，噪声已具备隐身特性，因此此时会将 $P$ 放宽为 1，允许全图范围的高频扰动优化。</p>
-<h2 id="5-训练细节"><a href="#5-训练细节" class="headerlink" title="5. 训练细节"></a>5. 训练细节</h2><p>为了确保生成的对抗样本具有良好的迁移性（Transferability），即能够攻击未知的黑盒模型，VPR-Cloak 在优化过程中采用了<strong>随机选择策略</strong>。</p>
-<p>系统维护一个包含多种不同架构 VPR 模型的模型池（Model Pool, e.g., NetVLAD, GeM 等）。在 SAP-PO 的 $K$ 次迭代循环中（通常 $K&#x3D;10$），算法并非固定使用某一个代理模型，而是随机从模型池中选择不同的模型作为当前的 Surrogate VPR 来计算梯度。这种“轮流陪练”的机制防止了扰动对单一模型结构的过拟合，显著增强了生成的对抗样本在面对未知黑盒模型（如 Google 或 Bing 的专有模型）时的通用攻击能力。</p>
-<h2 id="6-实验结果"><a href="#6-实验结果" class="headerlink" title="6. 实验结果"></a>6. 实验结果</h2><p>作者在多个具有挑战性的基准数据集上进行了广泛的评估，包括 PITTS30K（标准城市场景）、TOKYO247（光照变化）、MSLS（跨时间&#x2F;长周期）以及 NORDLAND（剧烈季节变化）。</p>
-<h3 id="6-1-黑盒攻击性能对比"><a href="#6-1-黑盒攻击性能对比" class="headerlink" title="6.1 黑盒攻击性能对比"></a>6.1 黑盒攻击性能对比</h3><p>实验对比了 VPR-Cloak 与当前的 SOTA 方法（如 ANDA 和 MultiANDA）。在黑盒设置下（即使用 Crica 模型作为代理生成的扰动去攻击 DHE 等其他模型），实验结果（Table 1）显示，VPR-Cloak 在 $\Delta R@1$（召回率下降幅度）等指标上全面超越基线方法。这表明该方法具有极强的迁移性，能够有效防御未知的 VPR 系统。</p>
-<p><img src="/images/vpr-cloak/result1.png" alt="total experiments"></p>
-<p><em>实验指标，保护成功率 (%) 比较 (Epsilon&#x3D;12&#x2F;255)。 ΔR@1、ΔR@5和ΔR@10衡量的是应用保护后模型检索精度的下降情况，值越大表明保护越强</em></p>
-<h3 id="6-2-图像质量评估"><a href="#6-2-图像质量评估" class="headerlink" title="6.2 图像质量评估"></a>6.2 图像质量评估</h3><p>在视觉质量方面，得益于频域优化策略，VPR-Cloak 生成的图像在 LPIPS（感知误差，越低越好）和 PSNR（峰值信噪比，越高越好）指标上均优于对比方法。定性结果表明，保护后的图像在人眼看来与原图几乎无异，没有明显的噪点或伪影。</p>
-<p><img src="/images/vpr-cloak/result3.png" alt="Image quality comparison"></p>
-<p><em>图像质量比较（Epsilon&#x3D;12&#x2F;255）。较高的 PSNR&#x2F;SSIM 和较低的 LPIPS 表示更好的视觉保真度，而较低的 Avg Epsilon 表示更难以察觉的扰动。</em></p>
-<p><img src="/images/vpr-cloak/result2.png" alt="Qualitative results"></p>
-<p><em>定性结果。我们的方法可以有效防止位置检索，同时保持图像质量。绿色框表示保护成功，橙色框表示保护成功。</em></p>
-<h3 id="6-3-运行效率与实战验证"><a href="#6-3-运行效率与实战验证" class="headerlink" title="6.3 运行效率与实战验证"></a>6.3 运行效率与实战验证</h3><p>效率评估显示，VPR-Cloak 处理单张图像仅需 0.036 秒，相比 MultiANDA 的 0.551 秒实现了约 15 倍的加速，满足了实时应用的需求。此外，作者还通过 Google Image Search 和 Microsoft Bing Image Search 进行了实战验证（Figure 4）。结果表明，经过 VPR-Cloak 处理的图像成功误导了这些顶级的商业视觉搜索系统，使其返回错误的地点或不相关的物体，充分证明了该方法的实际应用价值。</p>
-<p><img src="/images/vpr-cloak/result2.png" alt="Figure 4: Real-world protection"></p>
-<p><em>商业 API 防护测试。经 VPR-Cloak 保护的图像成功导致 Google 和 Bing 无法检索到正确的地理位置信息。</em></p>
-<hr>
-<p><strong>总结</strong></p>
-<p>本文首创了针对视觉地点识别（VPR）的隐私保护框架 VPR-Cloak，通过结合显著性区域定位与频域高频噪声优化（SAP-PO），成功实现了兼具黑盒攻击鲁棒性、视觉隐蔽性与实时处理能力的图像位置隐私保护。</p>
-<p>显著性区域定位是让攻击 <strong>“指哪打哪”</strong>（只改AI关注的建筑纹理，不改天空背景），<strong>频域高频噪声优化</strong> 是让攻击 <strong>“瞒天过海”</strong>（把干扰藏在人眼看不见的高频细节里，不动低频轮廓），两者结合就是**精准且隐形的致命打。</p>
-]]></content>
-      <tags>
-        <tag>Private</tag>
-        <tag>论文笔记</tag>
-        <tag>ICCV 2025</tag>
-        <tag>VPR</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>伊斯坦布尔</title>
-    <url>/2026/01/03/%E4%BC%8A%E6%96%AF%E5%9D%A6%E5%B8%83%E5%B0%94/</url>
-    <content><![CDATA[<p>土耳其有很多著名的城市与景点，其第一大都市伊斯坦布尔是欧洲最大的城市，横跨欧亚大陆，曾被拿破仑誉为“世界的首都”，这里有象征着拜占庭帝国的圣索菲亚大教堂，有代表了东正教最正统文化的圣乔治主座堂，也有承载了奥斯曼帝国记忆的托普卡帕宫。甚至连凯宾斯基运营的酒店Çiragan Palace Kempinski Instanbul，都曾经是奥斯曼帝国苏丹的皇宫。</p>
-<span id="more"></span>
-<h1 id="1、历史"><a href="#1、历史" class="headerlink" title="1、历史"></a>1、历史</h1><p>伊斯坦布尔地势较为平坦，起伏变化不大，地表较破碎。 属地中海气候。 伊斯坦布尔始建于公元前660年，希腊人在今“皇宫鼻”的地方筑城，取名拜占庭。324年，罗马帝国君士坦丁从罗马迁都于此，将其重建，改名君士坦丁堡，别称新罗马。395年成为东罗马帝国首都。 1204年第四次十字军东征占领，使得城市遭受了很大破坏。 1453年奥斯曼帝国苏丹迈赫迈特攻占并灭亡了东罗马，改名为伊斯坦布尔，至1923年始终为奥斯曼帝国首都。 2018年进入世界一线城市行列。</p>
-<h1 id="2、蓝色清真寺，伊斯坦布尔最著名的清真寺"><a href="#2、蓝色清真寺，伊斯坦布尔最著名的清真寺" class="headerlink" title="2、蓝色清真寺，伊斯坦布尔最著名的清真寺"></a>2、蓝色清真寺，伊斯坦布尔最著名的清真寺</h1><p><img src="https://visitistanbulofficial.com/wp-content/uploads/2022/06/Blue-Mosque-Istanbul-scaled.jpeg" alt="Blue-Mosque-Istanbul"><br>1597年，伟大的奥斯曼帝国刚刚摆脱了对哈布斯堡帝国和波斯帝国的两次毁灭性战争。因此，苏丹艾哈迈德一世决定通过为首都提供一个新的礼拜场所来重申奥斯曼帝国的权力。就这样开始了伟大的工作 苏丹艾哈迈德清真寺，被称为 伊斯坦布尔蓝色清真寺.<br>由于缺乏战争收益，苏丹从国库中筹集了建造新清真寺的资金。这个选择引起了不小的轰动。但尽管有讨论，该项目还是在充满政治意义的空间中进行的。<br>事实上，它建在君士坦丁堡大皇宫遗址的一部分，紧邻君士坦丁堡大清真寺。 圣索非亚大教堂。附近还有 跑马场，现在的苏丹哈米特广场，又一个充满意义的地方。著名帝国建筑师 Mi’mār Sinān 的学生 Sedefkar Mehmed Agha 被选中。</p>
-<p>这个 在伊斯坦布尔的蓝色清真寺 变得如此出名，以至于在 1953 年至 1976 年间，它的图像被选印在土耳其 500 里拉纸币上。由于其蜿蜒的曲线和六个尖塔，它也是伊斯坦布尔最受拍照关注的纪念碑。今天，它仍然像过去一样发挥其作用。除了宗教机构外，它还设有许多其他公共机构。<br>事实上，这里有一所宗教学校（古兰经学校）、为穷人提供的食堂和庇护所、哈曼和商店。这些空间的租金用于清真寺的维护，并为当地购物提供了独特的机会。<br><img src="https://visitistanbulofficial.com/wp-content/uploads/2022/06/View-from-Hagia-Sophia.png" alt="View-from-Hagia-Sophia"></p>
-]]></content>
-      <tags>
-        <tag>Travle</tag>
       </tags>
   </entry>
 </search>
